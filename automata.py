@@ -7,6 +7,7 @@ class Automota:
 
 
 class Node:
+    transitions = {}
     def __init__(self, node_name, transitions):
         self.node_name = node_name
         self.transitions = transitions
@@ -16,4 +17,3 @@ class Node:
             return None
         else:
             return transitions[to]
-    
