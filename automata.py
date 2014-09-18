@@ -13,7 +13,7 @@ class Node:
 
     def transition(to):
         if transitions[to] is None:
-            return None;
+            return None
         else:
             return transitions[to]
     
