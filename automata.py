@@ -12,8 +12,8 @@ class Node:
         self.transitions = transitions
 
     def transition(to):
-        if transitions[to] == null:
-            return null;
+        if transitions[to] is None:
+            return None;
         else:
             return transitions[to]
     
