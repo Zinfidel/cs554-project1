@@ -12,9 +12,6 @@ class Automota:
         self.start_states = start_states
         self.accept_states = accept_states
 
-    
-
-
 class Node:
     transitions = {}
     def __init__(self, node_name, transitions):
