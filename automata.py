@@ -1,6 +1,4 @@
-from enum import Enum
-
-class Automata_Type(Enum):
+class Automata_Type:
     nfa = 1
     dfa = 2
 
