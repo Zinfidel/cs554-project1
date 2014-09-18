@@ -1,9 +1,14 @@
-class enum.Automata_types:
-    dfa = 1
-    nfa = 2
+from enum import Enum
+
+class Automata_Type(Enum):
+    nfa = 1
+    dfa = 2
 
 class Automota:
     def __init__(self, type, states, start_state, accept_states):
+        if type != Automata_Type.nfa or type != Automata_Type.dfa:
+            raise Error("Automata must have either NFA or DFA enumated type!")
+
         self.type = type
         self.states = states
         self.start_states = start_states
