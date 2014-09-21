@@ -27,7 +27,7 @@ class AutomataNode:
             return None
 
     def addTransition(self, toState, transSymbol):
-        transitions.add(transSymbol, toState)
+        self.transitions.add(transSymbol, toState)
 
 
 
