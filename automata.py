@@ -29,4 +29,6 @@ class AutomataNode:
 
 
 if __name__ == '__main__': 
-    print "hello"
+    transitions= {('a', "bc"), ('b','a'), ('c','a')}
+    nodes = 'abc'
+    
