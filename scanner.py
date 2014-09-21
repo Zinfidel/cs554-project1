@@ -42,7 +42,6 @@ Automata = automata_keyword \
 
 
 TokenDictionary = {x:y for (x,y) in enumerate(["States", "Initial", "Transitions", "Alphabet"])}
-
 print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
 
 
