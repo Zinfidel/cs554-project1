@@ -43,7 +43,7 @@ Automata = automata_keyword \
 
 a = {}
 for (idx, x) in enumerate(Automata.parseFile("testdata/dfa2.txt")):
-    print idx x
+    print idx, x
     a[idx] = x
 
 print a
