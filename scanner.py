@@ -40,4 +40,5 @@ Automata = automata_keyword \
            + Group(Transitions)\
            + Group(Alphabet)
 
-print(zip(range(10),Automata.parseFile("testdata/dfa2.txt")))
+print(Dict(zip(range(10),Automata.parseFile("testdata/dfa2.txt"))))
+
