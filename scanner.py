@@ -24,10 +24,10 @@ States = states_keyword + StateList + end_keyword
 initial_keyword = Keyword("initial").suppress()
 InitialState = initial_keyword + State
 
-accept_keyword = Keyword("accept")
+accept_keyword = Keyword("accept").suppress()
 AcceptingStates = accept_keyword + StateList + end_keyword
 
-transitions_keyword = Keyword("transitions")
+transitions_keyword = Keyword("transitions").suppress()
 Transition = State + SymbolList + arrow + State
 TransitionList = ZeroOrMore(Transition)
 Transitions = transitions_keyword + TransitionList + end_keyword
