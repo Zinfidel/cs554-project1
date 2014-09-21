@@ -29,8 +29,11 @@ class AutomataNode:
 
 
 if __name__ == '__main__': 
-    transitions= {'a':['b','c'], 'b':['a'], 'c':['a']}
-    nodes = 'abc'
-    a = Automata(['a'], ['b','c'], nodes)
-    print a.hasTransition('a', 'b')
+    s2 = AutomataNode('s2', {})
+    s3 = AutomataNode('s3', {})
+    s1_dic = {'a':['b','c'], 'b':['a'], 'c':['a']}
+    s1 = AutomataNode('s1', s1_dic)
+    nodes = [s1,s2,s3]
+    a = Automata(s1, [s2,s3], nodes)
+    print a.hasTransition(s1, s2)
     
