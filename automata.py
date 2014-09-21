@@ -38,5 +38,5 @@ if __name__ == '__main__':
     s1.addTransition(s2, 'a')
     nodes = [s1,s2,s3]
     a = Automata(s1, [s2,s3], nodes)
-    print s1.getTransitions(s2)
+    print a.hasTransitions(s2)
     
