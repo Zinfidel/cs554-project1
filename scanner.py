@@ -4,6 +4,7 @@
 
 from pyparsing import *
 import automata
+
 # General definitions
 arrow = Keyword("-->").suppress()
 end_keyword = Keyword("end;").suppress()
