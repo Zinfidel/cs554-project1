@@ -32,8 +32,8 @@ class AutomataNode:
 
 
 if __name__ == '__main__': 
-    s2 = AutomataNode('s2', {})
-    s3 = AutomataNode('s3', {})
+    s2 = AutomataNode('s2')
+    s3 = AutomataNode('s3')
     nodes = [s1,s2,s3]
     a = Automata(s1, [s2,s3], nodes)
     print a.hasTransition(s1, s2)
