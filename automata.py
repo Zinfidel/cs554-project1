@@ -6,13 +6,13 @@ class Automata:
         self.acceptStates = acceptStates
         self.nodes = nodelist
 
-    def getStartStates():
+    def getStartStates(self):
         return self.starts
 
-    def isAcceptState(state):
+    def isAcceptState(self, state):
         return state in acceptStates
 
-    def hasTransition(fromState, toState):
+    def hasTransition(self, fromState, toState):
         return not (fromState.getTransitions(to) is None)
 
 class AutomataNode:
@@ -20,7 +20,7 @@ class AutomataNode:
         self.name = nodeName
         self.transitions = transitionDictionary
 
-    def getTransitions(state):
+    def getTransitions(self, state):
         if state in transitions:
             return transitions[state]
         else:
