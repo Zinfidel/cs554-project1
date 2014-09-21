@@ -25,3 +25,8 @@ class AutomataNode:
             return transitions[state]
         else:
             return None
+
+
+
+if __name is __main__: 
+    pass
