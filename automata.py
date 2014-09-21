@@ -16,15 +16,18 @@ class Automata:
         return not (fromState.getTransitions(to) is None)
 
 class AutomataNode:
-    def __init__(self, nodeName, transitionDictionary):
+    def __init__(self, nodeName):
         self.name = nodeName
-        self.transitions = transitionDictionary
+        self.transitions = {}
 
     def getTransitions(self, state):
         if state in transitions:
             return transitions[state]
         else:
             return None
+
+    def addTransition(self, toState, transSymbol):
+        transitions.add(transSymbol, toState)
 
 
 
