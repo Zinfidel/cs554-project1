@@ -29,7 +29,7 @@ class AutomataNode:
 
 
 if __name__ == '__main__': 
-    transitions= {('a', "bc"), ('b','a'), ('c','a')}
+    transitions= {'a':['b','c'], 'b':['a'], 'c':['a']}
     nodes = 'abc'
     print transitions('a')
     
