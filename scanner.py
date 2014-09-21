@@ -33,11 +33,11 @@ TransitionList = ZeroOrMore(Transition)
 Transitions = transitions_keyword + TransitionList + end_keyword
 
 automata_keyword = Keyword("dfa").suppress() ^ Keyword("nfa").suppress()
-Automata = Dict(automata_keyword \
+Automata = automata_keyword \
            + Group(States)\
            + Group(InitialState)\
            + Group(AcceptingStates)\
            + Group(Transitions)\
-           + Group(Alphabet))
+           + Group(Alphabet)
 
 print(Automata.parseFile("testdata/dfa2.txt"))
