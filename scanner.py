@@ -41,6 +41,6 @@ Automata = automata_keyword \
            + Group(Alphabet)
 
 
-print {idx:x for (idx, x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
+print { idx:x for (idx, x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
 
 
