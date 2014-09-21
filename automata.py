@@ -16,7 +16,7 @@ class Automata:
         return not (fromState.getTransitions(to) is None)
 
 class AutomataNode:
-    def __inti__(self, nodeName, transitionDictionary):
+    def __init__(self, nodeName, transitionDictionary):
         self.name = nodeName
         self.transitions = transitionDictionary
 
