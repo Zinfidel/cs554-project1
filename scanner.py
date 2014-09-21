@@ -3,7 +3,7 @@
 """scanner.py: Contains scanner/lexer/tokenizer functions for reading from a file."""
 
 from pyparsing import *
-import ./automata.py
+import automata.py
 # General definitions
 arrow = Keyword("-->").suppress()
 end_keyword = Keyword("end;").suppress()
