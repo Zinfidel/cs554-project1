@@ -3,6 +3,7 @@
 """scanner.py: Contains scanner/lexer/tokenizer functions for reading from a file."""
 
 from pyparsing import *
+import Automata
 
 # General definitions
 arrow = Keyword("-->").suppress()
@@ -40,6 +41,8 @@ Automata = automata_keyword \
            + Group(Transitions)\
            + Group(Alphabet)
 
+def constructAutomata(charList):
+    automata = Automata.parse(charList)
 
 TokenDictionary = {x:y for (x,y) in enumerate(["States", "Initial", "Transitions", "Alphabet"])}
 print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
