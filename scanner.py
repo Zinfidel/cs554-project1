@@ -32,7 +32,7 @@ Transition = State + SymbolList + arrow + State
 TransitionList = ZeroOrMore(Transition)
 Transitions = transitions_keyword + TransitionList + end_keyword
 
-automata_keyword = Keyword("dfa") ^ Keyword("nfa")
+automata_keyword = Keyword("dfa").suppress() ^ Keyword("nfa").suppress()
 Automata = automata_keyword \
            + Group(States)\
            + Group(InitialState)\
