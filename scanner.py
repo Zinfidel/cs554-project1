@@ -21,7 +21,7 @@ State = ~end_keyword + Word(alphanums)
 StateList = ZeroOrMore(State)
 States = states_keyword + StateList + end_keyword
 
-initial_keyword = Keyword("initial")
+initial_keyword = Keyword("initial").suppress()
 InitialState = initial_keyword + State
 
 accept_keyword = Keyword("accept")
