@@ -13,7 +13,7 @@ class Automata:
         return state in acceptStates
 
     def hasTransition(self, fromState, toState):
-        return not (fromState.getTransitions(to) is None)
+        return not (fromState.getTransitions(toState) is None)
 
 class AutomataNode:
     def __init__(self, nodeName):
