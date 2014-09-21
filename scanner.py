@@ -39,5 +39,6 @@ Automata = automata_keyword \
            + Group(AcceptingStates)\
            + Group(Transitions)\
            + Group(Alphabet)
-print(zip(range(10), Automata.parseFile("testdata/dfa2.txt")))
+for x in (zip(range(10), Automata.parseFile("testdata/dfa2.txt"))):
+    print x
 print({x:y for (x,y) in zip(range(10), Automata.parseFile("testdata/dfa2.txt"))})
