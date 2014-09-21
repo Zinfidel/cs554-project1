@@ -28,5 +28,5 @@ class AutomataNode:
 
 
 
-if __name__ is __main__: 
+if __name__ is main: 
     pass
