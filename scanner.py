@@ -42,6 +42,6 @@ Automata = automata_keyword \
 
 
 for (idx, x) in enumerate(Automata.parseFile("testdata/dfa2.txt")):
-    print (idx, x)
+    print idx, x
 
 
