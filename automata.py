@@ -21,7 +21,7 @@ class AutomataNode:
         self.transitions = {}
 
     def getTransitions(self, state):
-        if state in self.transitions.keys():
+        if state in self.transitions:
             return self.transitions[state]
         else:
             return None
