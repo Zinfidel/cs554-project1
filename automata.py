@@ -32,6 +32,7 @@ class AutomataNode:
 
 
 if __name__ == '__main__': 
+    s1 = AutomataNode('s1')
     s2 = AutomataNode('s2')
     s3 = AutomataNode('s3')
     nodes = [s1,s2,s3]
