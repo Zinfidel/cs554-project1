@@ -16,7 +16,7 @@ SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 
 # DFA/NFA definition
-states_keyword = Keyword("states") + suppress()
+states_keyword = Keyword("states")
 State = ~end_keyword + Word(alphanums)
 StateList = ZeroOrMore(State)
 States = states_keyword + StateList + end_keyword
