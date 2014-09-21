@@ -43,7 +43,7 @@ Automata = automata_keyword \
 def constructAutomata(charList):
     automata = Automata.parse(charList)
 
-TokenDictionary = {y:x for (x,y) in enumerate(["States", "Initial", "Transitions", "Alphabet"])}
+AutomataTokenDictionary = {y:x for (x,y) in enumerate(["States", "Initial", "Transitions", "Alphabet"])}
 print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
 
 
