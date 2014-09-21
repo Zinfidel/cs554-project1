@@ -45,4 +45,6 @@ a = {}
 for (idx, x) in enumerate(Automata.parseFile("testdata/dfa2.txt")):
     a[idx] = x
 
+print a
+
 
