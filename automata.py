@@ -28,5 +28,5 @@ class AutomataNode:
 
 
 
-if __name__ is "main": 
+if __name__ == '__main__': 
     print "hello"
