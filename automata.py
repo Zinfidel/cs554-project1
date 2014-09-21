@@ -13,14 +13,14 @@ class Automata:
         return state in acceptStates
 
     def hasTransition(fromState, toState):
-        return not (fromState.getTransition(to) is None)
+        return not (fromState.getTransitions(to) is None)
 
 class AutomataNode:
     def __inti__(self, nodeName, transitionDictionary):
         self.name = nodeName
         self.transitions = transitionDictionary
 
-    def getTransition(state):
+    def getTransitions(state):
         if state in transitions:
             return transitions[state]
         else:
