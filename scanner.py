@@ -5,12 +5,12 @@
 from pyparsing import *
 
 # General definitions
-arrow = Keyword("-->")
-end_keyword = Keyword("end;")
+arrow = Keyword("-->").suppress()
+end_keyword = Keyword("end;").suppress()
 
 # Alphabet definition
-alphabet_keyword = Keyword("alphabet")
-alphabet_end_keyword = Keyword("end")
+alphabet_keyword = Keyword("alphabet").suppress()
+alphabet_end_keyword = Keyword("end").suppress()
 Symbol = Word("\'", alphas, exact=2)
 SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
