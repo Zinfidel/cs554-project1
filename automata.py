@@ -27,7 +27,10 @@ class AutomataNode:
             return None
 
     def addTransition(self, toState, transSymbol):
-        self.transitions[toState].append(transSymbol)
+        if toState in self.transitions:
+            self.transitions[toState].append(transSymbol)
+        else:
+            self.transitions[toState] = [transSymbol]
 
 
 
