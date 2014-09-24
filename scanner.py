@@ -31,7 +31,7 @@ AcceptingStates = accept_keyword + StateList + end_keyword
 
 transitions_keyword = Keyword("transitions").suppress()
 Transition = State + SymbolList + arrow + State
-TransitionList = ZeroOrMore(Transition)
+TransitionList = delimitedList(Transition, delim='\n')
 Transitions = transitions_keyword + TransitionList + end_keyword
 
 automata_keyword = Keyword("dfa").suppress() ^ Keyword("nfa").suppress()
