@@ -48,11 +48,21 @@ def ParseAutomata(charList):
 def ConstructAutomata(charList):
     rawAutomata = ParseAutomata(charList)
 
-    states = rawAutomata[AutomataTokenDictionary["States"]]
-    startStates = rawAutomata[AutomataTokenDictionary["Initial"]]
-    transitions = rawAutomata[AutomataTokenDictionary["Transitions"]]
+    statesList = rawAutomata[AutomataTokenDictionary["States"]]
+    startStatesList = rawAutomata[AutomataTokenDictionary["Initial"]]
+    transitionsList = rawAutomata[AutomataTokenDictionary["Transitions"]]
     sigma = rawAutomata[AutomataTokenDictionary["Alphabet"]]
+
+    print "Sigma: ", sigma
+    print "States: ", statesList
+    print "Start States: ", statStatesList
+    for s in transitionsList:
+        print "Transition: ", s
 
 
 AutomataTokenDictionary = {y:x for (x,y) in enumerate(["States", "Initial", "Transitions", "Alphabet"])}
 print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
+
+
+if __name__ == "main":
+    ConstructAutomata(read("testdata/dfa2.txt"))
