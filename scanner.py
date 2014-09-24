@@ -68,4 +68,5 @@ print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
 
 
 if __name__ == "__main__":
-    ConstructAutomata(open("testdata/dfa2.txt").read())
+    print delimitedList(alphaNums).parseString("asdfa 1234 dkjlasdf 34123")
+    #ConstructAutomata(open("testdata/dfa2.txt").read())
