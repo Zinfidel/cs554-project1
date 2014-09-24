@@ -68,5 +68,9 @@ def ConstructAutomata(charList):
 
 
 if __name__ == "__main__":
+    text = "Aurthur, bedevere, launcelot, galahad, robin"
+    name = Word(alphas)
+    nameList = delimitedList(name)
+    print nameList.parse(text)
     print delimitedList(Word(alphas), delim=' ').parseString("asdfa asd dkjlasdf dsf")
     #ConstructAutomata(open("testdata/dfa2.txt").read())
