@@ -68,5 +68,5 @@ def ConstructAutomata(charList):
 
 
 if __name__ == "__main__":
-    print delimitedList(Word(alphanums)).parseString("asdfa 1234 dkjlasdf 34123")
+    print delimitedList(Word(alphanums)).parseString("asdfa asd1234 dkjlasdf dsf34123")
     #ConstructAutomata(open("testdata/dfa2.txt").read())
