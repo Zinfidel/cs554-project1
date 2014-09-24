@@ -6,6 +6,9 @@ class Automata:
         self.acceptStates = acceptStates
         self.nodes = nodelist
 
+    def getAllStates(self):
+        return self.nodes
+
     def getStartStates(self):
         return self.starts
 
