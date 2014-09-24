@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#ok, this is a testing thingy- justin
+#test 2
 
 """scanner.py: Contains scanner/lexer/tokenizer functions for reading from a file."""
 
