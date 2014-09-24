@@ -13,8 +13,8 @@ end_keyword = Keyword("end;").suppress()
 # Alphabet definition
 alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end").suppress()
+#TODO THIS IS NOT CORRECT. Symbols can be anything, not just two letters
 #Symbol = Word("\'", alphas, exact=2)
-Tick = Keyword("\'")
 SymbolList = Keyword("\'") + delimitedList(alphanums, delim="'")
 #SymbolList = OneOrMore(Symbol) + Keyword('\n')
 #SymbolList = OneOrMore(Symbol)
@@ -70,5 +70,5 @@ AutomataTokenDictionary = {y:x for (x,y) in enumerate(["States", "Start", "Accep
 
 if __name__ == "__main__":
 #    print OneOrMore(Word(alphas)).setDebug().parseString("asdfa asd dkjlasdf dsf")
-    print SymbolList.parseString("'a 'b 'c")
+    print SymbolList.parseString("'a 'b 'c") # <---- WAT. Why is this not working? TODO
 #    ConstructAutomata(open("testdata/dfa2.txt").read())
