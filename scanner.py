@@ -57,6 +57,7 @@ def ConstructAutomata(charList):
     print "Sigma: ", sigma
     print "States: ", statesList
     print "Start States: ", startStatesList
+    print "Transitions: ", transitionsList
     for s in transitionsList:
         print "Transition: ", s
 
