@@ -70,5 +70,5 @@ AutomataTokenDictionary = {y:x for (x,y) in enumerate(["States", "Start", "Accep
 
 if __name__ == "__main__":
 #    print OneOrMore(Word(alphas)).setDebug().parseString("asdfa asd dkjlasdf dsf")
-    print SymbolList.parseString("\'a \'b \'c")
+    print SymbolList.parseString("'a 'b 'c")
 #    ConstructAutomata(open("testdata/dfa2.txt").read())
