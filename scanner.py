@@ -63,8 +63,8 @@ def ConstructAutomata(charList):
         print "Transition: ", s
 
 
-AutomataTokenDictionary = {y:x for (x,y) in enumerate(["States", "Start", "Accept", "Transitions", "Alphabet"])}
-print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
+#AutomataTokenDictionary = {y:x for (x,y) in enumerate(["States", "Start", "Accept", "Transitions", "Alphabet"])}
+#print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
 
 
 if __name__ == "__main__":
