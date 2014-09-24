@@ -64,10 +64,10 @@ def ConstructAutomata(charList):
         print "Transition: ", s
 
 
-#AutomataTokenDictionary = {y:x for (x,y) in enumerate(["States", "Start", "Accept", "Transitions", "Alphabet"])}
-#print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
+AutomataTokenDictionary = {y:x for (x,y) in enumerate(["States", "Start", "Accept", "Transitions", "Alphabet"])}
+print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
 
 
 if __name__ == "__main__":
-    print OneOrMore(Word(alphas)).setDebug().parseString("asdfa asd dkjlasdf dsf")
-    #ConstructAutomata(open("testdata/dfa2.txt").read())
+#    print OneOrMore(Word(alphas)).setDebug().parseString("asdfa asd dkjlasdf dsf")
+    ConstructAutomata(open("testdata/dfa2.txt").read())
