@@ -14,8 +14,9 @@ end_keyword = Keyword("end;").suppress()
 alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end").suppress()
 #Symbol = Word("\'", alphas, exact=2)
-#Tick = Keyword("\'")
-SymbolList = delimitedList(alphanums, delim='\'')
+Tick = Keyword("\'")
+Symbol = Word(alphas)
+SymbolList = OneOrMore(Tick + Word)
 #SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 
@@ -68,9 +69,5 @@ def ConstructAutomata(charList):
 
 
 if __name__ == "__main__":
-    text = "Aurthur, bedevere, launcelot, galahad, robin"
-    name = Word(alphas)
-    nameList = delimitedList(name)
-    print nameList.parseString(text)
     print OneOrMore(Word(alphas)).setDebug().parseString("asdfa asd dkjlasdf dsf")
     #ConstructAutomata(open("testdata/dfa2.txt").read())
