@@ -65,4 +65,4 @@ print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
 
 
 if __name__ == "__main__":
-    ConstructAutomata(read("testdata/dfa2.txt"))
+    ConstructAutomata(open("testdata/dfa2.txt").read())
