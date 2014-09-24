@@ -13,11 +13,8 @@ end_keyword = Keyword("end;").suppress()
 # Alphabet definition
 alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end").suppress()
-#TODO THIS IS NOT CORRECT. Symbols can be anything, not just two letters
 Symbol = Word("\'", alphas)
 SymbolList = OneOrMore(Symbol)
-#SymbolList = OneOrMore(Symbol) + Keyword('\n')
-#SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 
 # DFA/NFA definition
