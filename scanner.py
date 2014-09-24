@@ -64,5 +64,5 @@ AutomataTokenDictionary = {y:x for (x,y) in enumerate(["States", "Initial", "Tra
 print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     ConstructAutomata(read("testdata/dfa2.txt"))
