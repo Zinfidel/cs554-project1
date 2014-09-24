@@ -70,4 +70,5 @@ print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
 
 if __name__ == "__main__":
 #    print OneOrMore(Word(alphas)).setDebug().parseString("asdfa asd dkjlasdf dsf")
+    print SymbolList.parseString("'a 'b 'c\n'")
     ConstructAutomata(open("testdata/dfa2.txt").read())
