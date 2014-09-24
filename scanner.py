@@ -13,7 +13,7 @@ end_keyword = Keyword("end;").suppress()
 # Alphabet definition
 alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end").suppress()
-Symbol = Word("\'", alphas, exact=2)
+Symbol = Keyword("\'").suppress() + Word(alphas)
 SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 
