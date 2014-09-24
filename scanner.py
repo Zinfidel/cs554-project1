@@ -15,7 +15,7 @@ alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end").suppress()
 #Symbol = Word("\'", alphas, exact=2)
 #Tick = Keyword("\'")
-SymbolList = ~end_keyword + delimitedList(alphas, delim='\'')
+SymbolList = ~end_keyword + delimitedList(alphanums, delim='\'')
 #SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 
