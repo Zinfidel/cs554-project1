@@ -72,5 +72,5 @@ if __name__ == "__main__":
     name = Word(alphas)
     nameList = delimitedList(name)
     print nameList.parseString(text)
-    print delimitedList(Word(alphas), delim='\'').setDebug().parseString("asdfa 'asd 'dkjlasdf 'dsf")
+    print delimitedList(Word(alphas), delim=' ').setDebug().parseString("asdfa asd dkjlasdf dsf")
     #ConstructAutomata(open("testdata/dfa2.txt").read())
