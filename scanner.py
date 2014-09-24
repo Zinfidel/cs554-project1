@@ -43,7 +43,7 @@ Automata = automata_keyword \
            + Group(Alphabet)
 
 def ParseAutomata(charList):
-    return {idx:x for (idx,x) in enumerate(Automata.parse(charLIst))}
+    return {idx:x for (idx,x) in enumerate(Automata.parseString(charLIst))}
 
 def ConstructAutomata(charList):
     rawAutomata = ParseAutomata(charList)
