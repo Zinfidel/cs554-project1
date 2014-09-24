@@ -6,6 +6,9 @@ class Automata:
         self.acceptStates = acceptStates
         self.nodes = nodelist
 
+    def __str__(self):
+        pass
+
     def getAllStates(self):
         return self.nodes
 
