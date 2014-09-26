@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-#ok, this is a testing thingy- justin
-#test 2
 
 """scanner.py: Contains scanner/lexer/tokenizer functions for reading from a file."""
 
 from pyparsing import *
+from automata import Automata
 
 # General definitions
 arrow = Keyword("-->").suppress()
@@ -16,56 +15,44 @@ alphabet_end_keyword = Keyword("end").suppress()
 Symbol = Word("\'", alphas)
 SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
+# example: ['a, 'b, 'c]
 
 # DFA/NFA definition
 states_keyword = Keyword("states").suppress()
 State = ~end_keyword + Word(alphanums)
 StateList = ZeroOrMore(State)
 States = states_keyword + StateList + end_keyword
+# example: [s1, s2, s3]
 
 initial_keyword = Keyword("initial").suppress()
 InitialState = initial_keyword + State
+# example: [s1, s2, s3]
 
 accept_keyword = Keyword("accept").suppress()
 AcceptingStates = accept_keyword + StateList + end_keyword
+# example: [s1, s2, s3]
 
 transitions_keyword = Keyword("transitions").suppress()
-Transition = State + SymbolList + arrow + State
-TransitionList = ZeroOrMore(Transition) #TODO make it so these are grouped when parsed
+Transition = Group(State + Group(SymbolList) + arrow + State)
+TransitionList = ZeroOrMore(Transition)
 Transitions = transitions_keyword + TransitionList + end_keyword
+# example: [ [s1, ['a, 'b], s2], [s2, ['a], s3] ]
 
 automata_keyword = Keyword("dfa").suppress() ^ Keyword("nfa").suppress()
-Automata = automata_keyword \
-           + Group(States)\
-           + Group(InitialState)\
-           + Group(AcceptingStates)\
-           + Group(Transitions)\
-           + Group(Alphabet)
-
-def ParseAutomata(charList):
-    return {idx:x for (idx,x) in enumerate(Automata.parseString(charList))}
-
-def ConstructAutomata(charList):
-    rawAutomata = ParseAutomata(charList)
-
-    statesList = rawAutomata[AutomataTokenDictionary["States"]]
-    startStatesList = rawAutomata[AutomataTokenDictionary["Start"]]
-    acceptStatesList = rawAutomata[AutomataTokenDictionary["Accept"]]
-    transitionsList = rawAutomata[AutomataTokenDictionary["Transitions"]]
-    sigma = rawAutomata[AutomataTokenDictionary["Alphabet"]]
-
-    print "Sigma: ", sigma
-    print "States: ", statesList
-    print "Start States: ", startStatesList
-    print "Transitions: ", transitionsList
-    for s in transitionsList:
-        print "Transition: ", s
+FiniteAutomata = automata_keyword\
+                 + Group(States).setResultsName("States")\
+                 + Group(InitialState).setResultsName("Start")\
+                 + Group(AcceptingStates).setResultsName("Accept")\
+                 + Group(Transitions).setResultsName("Transitions")\
+                 + Group(Alphabet).setResultsName("Alphabet")
 
 
-AutomataTokenDictionary = {y:x for (x,y) in enumerate(["States", "Start", "Accept", "Transitions", "Alphabet"])}
-#print {idx:x for (idx,x) in enumerate(Automata.parseFile("testdata/dfa2.txt"))}
-
+def ConstructAutomata(file):
+    """Parses the supplied automata file, then constructs and returns an Automata object.
+       The supplied file can either be a file object, or a URI.
+    """
+    fa = FiniteAutomata.parseFile(file)
+    return Automata(fa.States, fa.Start, fa.Accept, fa.Transitions)
 
 if __name__ == "__main__":
-#    print OneOrMore(Word(alphas)).setDebug().parseString("asdfa asd dkjlasdf dsf")
-    ConstructAutomata(open("testdata/dfa2.txt").read())
+    print(ConstructAutomata("testdata/dfa2.txt"))

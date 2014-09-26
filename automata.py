@@ -1,13 +1,28 @@
 
 
 class Automata:
-    def __init__(self, startStates, acceptStates, nodelist):
-        self.starts = startStates
-        self.acceptStates = acceptStates
-        self.nodes = nodelist
+    """Represents a finite automaton."""
+
+    def __init__(self, states, starts, accepts, transitions):
+        self.starts = starts
+        """List of names of starting states for the automata."""
+
+        self.accepts = accepts
+        """List of names of accepting states for the automata."""
+
+        self.nodes = {name: AutomataNode(name) for name in states}
+        """Dictionary of nodes in the automata. The key is the state name, the value is the node object."""
+
+        # Populate the nodes' transition dictionaries.
+        for trans in transitions:
+            fromState, symbols, toState = trans[0], trans[1], trans[2]
+            for symbol in symbols:
+                self.nodes[fromState].addTransition(toState, symbol)
 
     def __str__(self):
-        pass
+        return "Start: " + str(self.starts)\
+               + " Accept: " + str(self.accepts)\
+               + " States: " + str(self.nodes)
 
     def getAllStates(self):
         return self.nodes
@@ -16,15 +31,23 @@ class Automata:
         return self.starts
 
     def isAcceptState(self, state):
-        return state in acceptStates
+        return state in self.acceptStates
 
     def hasTransition(self, fromState, toState):
         return not (fromState.getTransitions(toState) is None)
 
+
 class AutomataNode:
-    def __init__(self, nodeName):
-        self.name = nodeName
+    def __init__(self, name):
+        self.name = name
         self.transitions = {}
+
+    def __str__(self):
+        # TODO: Not a very good representation of the node.
+        return str([(str(symbol) + " -> " + toState) for toState, symbol in self.transitions.items()])
+
+    def __repr__(self):
+        return str(self)
 
     def getTransitions(self, state):
         if state in self.transitions:
@@ -37,15 +60,3 @@ class AutomataNode:
             self.transitions[toState].append(transSymbol)
         else:
             self.transitions[toState] = [transSymbol]
-
-
-
-if __name__ == '__main__': 
-    s1 = AutomataNode('s1')
-    s2 = AutomataNode('s2')
-    s3 = AutomataNode('s3')
-    s1.addTransition(s2, 'a')
-    nodes = [s1,s2,s3]
-    a = Automata(s1, [s2,s3], nodes)
-    print a.hasTransition(s1, s2)
-    
