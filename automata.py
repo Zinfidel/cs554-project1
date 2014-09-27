@@ -1,37 +1,60 @@
-class Automata_Type:
-    nfa = 1
-    dfa = 2
+class Automata:
+    """Represents a finite automaton."""
 
-class Automota:
-    def __init__(self, type, states, start_state, accept_states):
-        if type != Automata_Type.nfa or type != Automata_Type.dfa:
-            raise Error("Automata must have either NFA or DFA enumated type!")
+    def __init__(self, states, starts, accepts, transitions):
+        self.starts = starts
+        """List of names of starting states for the automata."""
 
-        self.type = type
-        self.states = states
-        self.start_states = start_states
-        self.accept_states = accept_states
+        self.accepts = accepts
+        """List of names of accepting states for the automata."""
 
-class Node:
-    """
-    This is a node class that encapsulates a singular
-    node element for an NFA or DFA. 
-    
-    Attributes:
-       node_name -- the name of the node, or the state
-       transitions -- a dictionary of transitions indexed by the name of
-                      the transition node's node_name field
-    """
-    transitions = {}
-    def __init__(self, node_name, transitions):
-        self.node_name = node_name
-        self.transitions = transitions
+        self.nodes = {name: AutomataNode(name) for name in states}
+        """Dictionary of nodes in the automata. The key is the state name, the value is the node object."""
 
-    """
-    
-    """
-    def transition(to):
-        if transitions[to] is None:
-            return None
+        # Populate the nodes' transition dictionaries.
+        for trans in transitions:
+            fromState, symbols, toState = trans[0], trans[1], trans[2]
+            for symbol in symbols:
+                self.nodes[fromState].addTransition(toState, symbol)
+
+    def __str__(self):
+        return "Start: " + str(self.starts)\
+               + " Accept: " + str(self.accepts)\
+               + " States: " + str(self.nodes)
+
+    def getAllStates(self):
+        return self.nodes
+
+    def getStartStates(self):
+        return self.starts
+
+    def isAcceptState(self, state):
+        return state in self.acceptStates
+
+    def hasTransition(self, fromState, toState):
+        return not (fromState.getTransitions(toState) is None)
+
+
+class AutomataNode:
+    def __init__(self, name):
+        self.name = name
+        self.transitions = {}
+
+    def __str__(self):
+        # TODO: Not a very good representation of the node.
+        return str([(str(symbol) + " -> " + toState) for toState, symbol in self.transitions.items()])
+
+    def __repr__(self):
+        return str(self)
+
+    def getTransitions(self, state):
+        if state in self.transitions:
+            return self.transitions[state]
         else:
-            return transitions[to]
+            return None
+
+    def addTransition(self, toState, transSymbol):
+        if toState in self.transitions:
+            self.transitions[toState].append(transSymbol)
+        else:
+            self.transitions[toState] = [transSymbol]
