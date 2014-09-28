@@ -1,3 +1,4 @@
+
 class Production:
     def __init__(self, alphabet):
         self.alphabet = alphabet
