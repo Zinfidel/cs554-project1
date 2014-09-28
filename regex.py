@@ -13,7 +13,7 @@ class Sigma(Production):
         return str(self.sigma)
 
     def matches(self, character):
-        return character == sigma
+        return character == self.sigma
 
 class Repetition(Production):
     def __init__(self, expr):
