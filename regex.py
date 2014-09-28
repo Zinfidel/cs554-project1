@@ -5,11 +5,7 @@ class Production:
     def matches(self, character):
         pass
 
-
-
-        
-
-class Alphabet(Regex):
+class Alphabet(Production):
     def __init__(self, sigma):
         self.sigma = simga
 
@@ -19,7 +15,7 @@ class Alphabet(Regex):
     def matches(self, character):
         return character in sigma
 
-class Alternative(Regex):
+class Alternative(Production):
     def __init__(self, left, right):
         self.left = left
         self.right = right
@@ -31,7 +27,7 @@ class Alternative(Regex):
         return self.left.matches(string) or \
                self.right.matches(string)
 
-class Concatenation(Regex):
+class Concatenation(Production):
     def __init__(self, left, right):
         self.left = left
         self.right = right
@@ -42,7 +38,7 @@ class Concatenation(Regex):
     def matches(self, string):
         return self.left.matches(string[0:1]) and self.right.matches(string[1:])
 
-class NilExpression(Regex):
+class NilExpression(Production):
     def __str__(self):
         return ''
 
