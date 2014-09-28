@@ -62,18 +62,22 @@ class NilExpression(Production):
 
 if __name__ == "__main__":
     a = Sigma('a')
+    print a
     print a.matches('a')
 
     r = Repetition(a)
+    print r
     print r.matches('aaaaa')
 
     b = Sigma('b')
     a = Alternative(b, r)
+    print a
     print a.matches('b')
     print a.matches('aaaa')
     print a.matches('c')
 
     c = Concatenation(b, a)
+    print c
     print c.matches('ba')
     print c.matches('ab')
 
