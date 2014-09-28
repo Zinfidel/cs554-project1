@@ -19,7 +19,7 @@ class Alternative(RegexExpression):
         pass
     
 
-class NilExpression(Regex):
+class NilExpression(RegexExpression):
     def __str__(self):
         return ''
 
