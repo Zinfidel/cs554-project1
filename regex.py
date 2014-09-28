@@ -20,7 +20,7 @@ class Repetition(Production):
         self.expr = expr
     
     def __str__(self):
-        return "* " + str(expr)
+        return "* " + str(self.expr)
 
     def matches(self, string):
         return self.expr.matches(string[0:1]) or self.matches(string[1:])
