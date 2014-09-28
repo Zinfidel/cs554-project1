@@ -16,7 +16,7 @@ class Sigma(Production):
         return character == sigma
 
 class Repetition(Production):
-    def __init__(self, expression):
+    def __init__(self, expr):
         self.expr = expr
     
     def __str__(self):
