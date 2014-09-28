@@ -18,7 +18,6 @@ class Alphabet(Regex):
 
     def matches(self, character):
         return character in sigma
-        
 
 class Alternative(Regex):
     def __init__(self, left, right):
