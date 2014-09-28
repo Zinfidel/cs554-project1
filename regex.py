@@ -15,7 +15,8 @@ class Alternative(RegexExpression):
         return '|' + str(left) + ' ' +  str(right)
 
     def matches(self, string):
-        string.
+        #        string.
+        pass
     
 
 class NilExpression(Regex):
