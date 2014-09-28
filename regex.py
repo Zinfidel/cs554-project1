@@ -23,6 +23,7 @@ class Repetition(Production):
         return "* " + str(self.expr)
 
     def matches(self, string):
+        print "matching " + string[0:1]
         return self.expr.matches(string[0:1]) or self.matches(string[1:])
 
 class Alternative(Production):
