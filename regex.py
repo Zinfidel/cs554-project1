@@ -71,3 +71,7 @@ if __name__ == "__main__":
     a = Alternative(b, r)
     print a.matches('aaaa')
 
+    c = Concatenation(b, a)
+    print c.matches('ba')
+    print c.matches('ab')
+
