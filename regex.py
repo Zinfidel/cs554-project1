@@ -3,13 +3,21 @@ class Production:
         self.alphabet = alphabet
 
     def matches(self, character):
-        return character in alphabet
+        pass
+
+
+
         
 
 class Alphabet(Regex):
     def __init__(self, sigma):
-        
-    def __repr__(
+        self.sigma = simga
+
+    def __str__(self):
+        return 
+
+    def matches(self, character):
+        return character in sigma
         
 
 class Alternative(Regex):
@@ -33,7 +41,7 @@ class Concatenation(Regex):
         return '+ ' + str(self.left) + ' ' + str(self.right)
 
     def matches(self, string):
-        return 
+        return self.left.matches(string[0:1]) and self.right.matches(string[1:])
 
 class NilExpression(Regex):
     def __str__(self):
