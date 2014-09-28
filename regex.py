@@ -69,5 +69,5 @@ if __name__ == "__main__":
 
     b = Sigma('b')
     a = Alternative(b, r)
-    print a.matches('bb')
+    print a.matches('aaaa')
 
