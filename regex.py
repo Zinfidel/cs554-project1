@@ -5,17 +5,15 @@ class Production:
     def matches(self, character):
         pass
 
-
-
-class Alphabet(Production):
+class Sigma(Production):
     def __init__(self, sigma):
         self.sigma = simga
 
     def __str__(self):
-        return 
+        return str(sigma)
 
     def matches(self, character):
-        return character in sigma
+        return character == sigma
 
 class Repetition(Production):
     def __init__(self, expression):
