@@ -7,7 +7,7 @@ class Production:
 
 class Sigma(Production):
     def __init__(self, sigma):
-        self.sigma = simga
+        self.sigma = sigma
 
     def __str__(self):
         return str(sigma)
