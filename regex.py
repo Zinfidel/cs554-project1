@@ -1,25 +1,41 @@
-class RegexExpression:
-    def __init__(self):
-        pass
-    
-    def matches(self, string):
-        pass
+class Production:
+    def __init__(self, alphabet):
+        self.alphabet = alphabet
 
+    def matches(self, character):
+        return character in alphabet
+        
 
-class Alternative(RegexExpression):
+class Alphabet(Regex):
+    def __init__(self, sigma):
+        
+    def __repr__(
+        
+
+class Alternative(Regex):
     def __init__(self, left, right):
         self.left = left
         self.right = right
 
     def __str__(self):
-        return '|' + str(left) + ' ' +  str(right)
+        return '| ' + str(self.left) + ' ' +  str(self.right)
 
     def matches(self, string):
-        #        string.
-        pass
-    
+        return self.left.matches(string) or \
+               self.right.matches(string)
 
-class NilExpression(RegexExpression):
+class Concatenation(Regex):
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+    
+    def __str__(self):
+        return '+ ' + str(self.left) + ' ' + str(self.right)
+
+    def matches(self, string):
+        return 
+
+class NilExpression(Regex):
     def __str__(self):
         return ''
 
