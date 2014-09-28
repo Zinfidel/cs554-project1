@@ -24,3 +24,7 @@ class NilExpression(Regex):
 
     def matches(self, string):
         return string == ''
+
+
+if __name__ == "__main__":
+    print '' == ''
