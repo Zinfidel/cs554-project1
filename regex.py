@@ -5,6 +5,8 @@ class Production:
     def matches(self, character):
         pass
 
+
+
 class Alphabet(Production):
     def __init__(self, sigma):
         self.sigma = simga
@@ -14,6 +16,13 @@ class Alphabet(Production):
 
     def matches(self, character):
         return character in sigma
+
+class Repetition(Production):
+    def __init__(self, expression):
+        self.expr = expr
+    
+    def __str__(self):
+        return "* " + str(expr)
 
 class Alternative(Production):
     def __init__(self, left, right):
