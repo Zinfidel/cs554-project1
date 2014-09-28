@@ -61,8 +61,10 @@ class NilExpression(Production):
 
 
 if __name__ == "__main__":
-    sigma = Sigma('a')
-    print sigma.matches('a')
-    r = Repetition(sigma)
+    a = Sigma('a')
+    
+    print a.matches('a')
+    r = Repetition(a)
+    a = Alternative()
     print r.matches('aaaaa')
     print r
