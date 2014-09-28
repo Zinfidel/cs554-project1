@@ -83,4 +83,4 @@ if __name__ == "__main__":
     print c
     print c.matches('ba')
     print c.matches('ab')
-    print
+    print c.matches('aa')
