@@ -65,6 +65,5 @@ if __name__ == "__main__":
     
     print a.matches('a')
     r = Repetition(a)
-    a = Alternative()
     print r.matches('aaaaa')
     print r
