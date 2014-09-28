@@ -24,7 +24,7 @@ class Repetition(Production):
 
     def matches(self, string):
         print "matching " + string[0:1]
-        if string == []:
+        if string == '':
             return true
         
         return self.expr.matches(string[0:1]) or self.matches(string[1:])
