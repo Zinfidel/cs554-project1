@@ -22,6 +22,9 @@ class Repetition(Production):
     def __str__(self):
         return "* " + str(expr)
 
+    def matches(self, string):
+        return self.expr.matches(string[0:1]) or self.matches(string[1:])
+
 class Alternative(Production):
     def __init__(self, left, right):
         self.left = left
