@@ -10,7 +10,7 @@ class Sigma(Production):
         self.sigma = sigma
 
     def __str__(self):
-        return str(sigma)
+        return str(self.sigma)
 
     def matches(self, character):
         return character == sigma
