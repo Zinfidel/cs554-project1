@@ -57,4 +57,5 @@ class NilExpression(Production):
 
 
 if __name__ == "__main__":
-    print '' == ''
+    sigma = Sigma('a')
+    print sigma
