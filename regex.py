@@ -26,8 +26,7 @@ class Repetition(Production):
 
         if string == '':
             return False
-
-        return self.expr.matches(string[0:1]) or self.matches(string[1:])
+        print "matching " + string[0:1] + " is:" + self.expr.matches(string[0:1])        return self.expr.matches(string[0:1]) or self.matches(string[1:])
 
 class Alternative(Production):
     def __init__(self, left, right):
