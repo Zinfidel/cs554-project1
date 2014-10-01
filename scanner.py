@@ -64,4 +64,5 @@ Regex = ZeroOrMore(Literal('*') | \
 if __name__ == "__main__":
     print Regex.parseString("* | 'a + 'a ' ")
     print (Word(alphas) | Literal(' ')).parseString(' ');
+    print Symbol.parseString('\' ')
 
