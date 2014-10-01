@@ -59,7 +59,7 @@ def ConstructAutomata(file):
 Regex = ZeroOrMore(Literal('*') | \
                    Literal('|') | \
                    Literal('+') | \
-                   (Symbol )
+                   Symbol)
 
 if __name__ == "__main__":
     print Regex.parseString("* | 'a + 'a ' ")
