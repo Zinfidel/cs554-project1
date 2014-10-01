@@ -56,12 +56,6 @@ def ConstructAutomata(file):
 
 
 # Regex parsing:
-Expression = Group(OrExpression).setResultsName("Or") |\
-             Group(ConcatExpression).setResultsName("Concat") |\
-             Group(KleeneExpression).setResultsName("Kleene") |\
-             Group(EpsilonExpression).setResultsName("Epsilon") |\
-             Group(SigmaExpression).setResultsName("Sigma")
-
 SigmaExpression = Literal('\'').suppress() + Word(alphas)
 
 OrExpression = Literal('|') + Expression + Expression
@@ -69,6 +63,12 @@ OrExpression = Literal('|') + Expression + Expression
 ConcatExpression = Literal('+') + Expression + Expression
 
 KleeneExpression = Literal('*') + Expression
+
+Expression = Group(OrExpression).setResultsName("Or") |\
+             Group(ConcatExpression).setResultsName("Concat") |\
+             Group(KleeneExpression).setResultsName("Kleene") |\
+             Group(EpsilonExpression).setResultsName("Epsilon") |\
+             Group(SigmaExpression).setResultsName("Sigma")
 
 if __name__ == "__main__":
     dfa = ConstructAutomata("testdata/dfa2.txt")
