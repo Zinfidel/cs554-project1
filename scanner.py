@@ -59,5 +59,5 @@ def ConstructAutomata(file):
 Regex = ZeroOrMore(Literal('*') | Literal('|'))
 
 if __name__ == "__main__":
-    print Regex.matchString("* * *")
+    print Regex.parseString("* * *")
 
