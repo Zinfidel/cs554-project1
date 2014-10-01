@@ -1,3 +1,5 @@
+
+
 class Automata:
     """Represents a finite automaton."""
 
