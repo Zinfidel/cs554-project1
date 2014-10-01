@@ -125,7 +125,7 @@ if __name__ == "__main__":
     print e
     c = Concatenation(Sigma('a'), Repetition(Sigma('a')))
     print c.matches('aa')
-    print e.matches('a')
+    print e.matches('aaaaaa')
     print l
 #    print Symbol.parseString('\' ') # <---- TODO: This should work... ' ' can
                                     #             be part of the alphabet
