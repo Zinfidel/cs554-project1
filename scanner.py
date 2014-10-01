@@ -93,7 +93,7 @@ def BuildExpression(tokens):
         rightSide, leftover = BuildExpression(leftover)
         return Concatenation(leftSide, rightSide), leftover
     # E -> | E E
-    else if t == '|':
+    elif t == '|':
 
         leftSide, leftover = BuildExpression(tokens[1:])
 
@@ -105,11 +105,11 @@ def BuildExpression(tokens):
         rightSide, leftover = BuildExpression(leftover)
         return Alternative(leftSide, rightSide), leftover
     # E -> * E
-    else if t == '*':
+    elif t == '*':
         e, leftover = BuildExpression(tokens[1:])
         return Repetition(e), leftover
     # E -> _ (empty, not underscore)
-    else if t == '':
+    elif t == '':
         return NilExpression(), tokens[1:]
     # E -> sigma (where sigma is some symbol that doesn't match the previous
     # values
