@@ -58,4 +58,4 @@ if __name__ == "__main__":
     dfa = ConstructAutomata("testdata/dfa2.txt")
     print dfa.nodes
     print dfa.nodes['s3']
-    print dfa.nodes['s3'].getTransitions('a')
+    print dfa.nodes['s3'].getTransitions('s4')
