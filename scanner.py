@@ -76,6 +76,21 @@ def BuildExpression(tokens):
 
        tokens: Expected to be a list of string tokens (ie: ['+', 'a', 'a'])
     '''
+    t = tokens[0]
+
+    if t == '+':
+        # build the appropriate expression for the left argument to the concat
+        # operation and return the leftover tokens
+        leftSide, leftover = BuildExpression(tokens[1:])
+       
+        # Make sure we have tokens to consume, otherwise an error
+        if len(leftover) == 0:
+            raise Error('''No more tokens found after building the left hand side of
+                           a ConcatExpression''')
+        # Build the right hand side of the ConcatExpression
+        rightSide, leftover = BuildExpression(leftover)
+        return ConcatExpression(leftSide, rightSide), leftover
+     
     pass
 
 if __name__ == "__main__":
