@@ -68,6 +68,7 @@ def ConstructRegex(file):
        The supplied input an be a file object or a URI.
     '''
     regex_tokens = Regex.parseFile(file)
+    r, leftover = BuildExpression(regex_tokens)
     pass
 
 def BuildExpression(tokens):
