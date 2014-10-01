@@ -70,7 +70,6 @@ ConcatExpression = Literal('+') + Expression + Expression
 
 KleeneExpression = Literal('*') + Expression
 
-
 if __name__ == "__main__":
     dfa = ConstructAutomata("testdata/dfa2.txt")
     print dfa.nodes
