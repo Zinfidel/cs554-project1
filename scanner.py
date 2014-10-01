@@ -63,5 +63,6 @@ Regex = ZeroOrMore(Literal('*') | \
 
 if __name__ == "__main__":
     print Regex.parseString("* | 'a + 'a ' ")
-    print Symbol.parseString('\' ')
+    print Symbol.parseString('\' ') # <---- TODO: This should work... ' ' can
+                                    # be part of the alphabet
 
