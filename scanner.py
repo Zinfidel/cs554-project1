@@ -54,6 +54,23 @@ def ConstructAutomata(file):
     fa = FiniteAutomata.parseFile(file)
     return Automata(fa.States, fa.Start, fa.Accept, fa.Transitions)
 
+
+# Regex parsing:
+Expression = Group(OrExpression).setResultsName("Or") |\
+             Group(ConcatExpression).setResultsName("Concat") |\
+             Group(KleeneExpression).setResultsName("Kleene") |\
+             Group(EpsilonExpression).setResultsName("Epsilon") |\
+             Group(SigmaExpression).setResultsName("Sigma")
+
+SigmaExpression = Word(alphas)
+
+OrExpression = Literal('|') + Expression + Expression
+
+ConcatExpression = Literal('+') + Expression + Expression
+
+KleeneExpression = Literal('*') + Expression
+
+
 if __name__ == "__main__":
     dfa = ConstructAutomata("testdata/dfa2.txt")
     print dfa.nodes
