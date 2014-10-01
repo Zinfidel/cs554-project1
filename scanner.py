@@ -81,6 +81,7 @@ def BuildExpression(tokens):
 
     # E -> + E E
     if t == '+':
+#TODO: Clean this up
 #        return BuildConcatenation(tokens[1:])a
         # build the appropriate expression for the left argument to the concat
         # operation and return the leftover tokens
