@@ -119,7 +119,7 @@ def BuildExpression(tokens):
 
 
 if __name__ == "__main__":
-    tokens = Regex.parseString("+ 'a 'a")
+    tokens = Regex.parseString("| 'a 'a")
     print tokens
     e, l = BuildExpression(tokens)
     print e
