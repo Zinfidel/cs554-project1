@@ -78,6 +78,7 @@ def BuildExpression(tokens):
     '''
     t = tokens[0]
 
+    # E -> + E E
     if t == '+':
         # build the appropriate expression for the left argument to the concat
         # operation and return the leftover tokens
@@ -89,10 +90,32 @@ def BuildExpression(tokens):
                            a ConcatExpression''')
         # Build the right hand side of the ConcatExpression
         rightSide, leftover = BuildExpression(leftover)
-        return ConcatExpression(leftSide, rightSide), leftover
-    else if 
-     
-    pass
+        return Concatenation(leftSide, rightSide), leftover
+    # E -> | E E
+    else if t == '|':
+
+        leftSide, leftover = BuildExpression(tokens[1:])
+
+        # Make sure we have tokens to consume, otherwise an error
+        if len(leftover) == 0:
+            raise Error('''No more tokens found after building the left hand side of
+                           a ConcatExpression''')
+
+        rightSide, leftover = BuildExpression(leftover)
+        return Alternative(leftSide, rightSide), leftover
+    # E -> * E
+    else if t == '*':
+        e, leftover = BuildExpression(tokens[1:])
+        return Repetition(e), leftover
+    # E -> _ (empty, not underscore)
+    else if t == '':
+        return NilExpression(), tokens[1:]
+    # E -> sigma (where sigma is some symbol that doesn't match the previous
+    # values
+    else:
+        return Sigma(t), tokens[1:]
+        
+
 
 if __name__ == "__main__":
     print Regex.parseString("* | 'a + 'a ' ")
