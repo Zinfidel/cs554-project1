@@ -4,6 +4,7 @@
 
 from pyparsing import *
 from automata import Automata
+from regex import *
 
 # General definitions
 arrow = Keyword("-->").suppress()
@@ -62,9 +63,20 @@ Regex = ZeroOrMore(Literal('*') | \
                    Symbol)
 
 def ConstructRegex(file):
-    '''Parses the supplied regex, and constructs the appropriate data structure
+    '''Parses the supplied regex, and constructs the appropriate Regex data structure found in ./regex.py
        
+       The supplied input an be a file object or a URI.
     '''
+    regex_tokens = Regex.parseFile(file)
+    pass
+
+def BuildExpression(tokens):
+    '''Builds an expression from a list of tokens using a one token look ahead
+       strategy. 
+
+       tokens: Expected to be a list of string tokens (ie: ['+', 'a', 'a'])
+    '''
+    pass
 
 if __name__ == "__main__":
     print Regex.parseString("* | 'a + 'a ' ")
