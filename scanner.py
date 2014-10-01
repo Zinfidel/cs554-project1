@@ -122,6 +122,7 @@ if __name__ == "__main__":
     tokens = Regex.parseString("+ 'a * 'a")
     print tokens
     e, l = BuildExpression(tokens)
+    print e
     c = Concatenation(Sigma('a'), Repetition('a'))
     print c.matches('aa')
     print e.matches('a')
