@@ -123,7 +123,7 @@ if __name__ == "__main__":
     print tokens
     e, l = BuildExpression(tokens)
     c = Concatenation(Sigma('a'), Repetition('a'))
-    print c.matches('a')
+    print c.matches('aa')
     print e.matches('a')
     print l
 #    print Symbol.parseString('\' ') # <---- TODO: This should work... ' ' can
