@@ -61,6 +61,11 @@ Regex = ZeroOrMore(Literal('*') | \
                    Literal('+') | \
                    Symbol)
 
+def ConstructRegex(file):
+    '''Parses the supplied regex, and constructs the appropriate data structure
+       
+    '''
+
 if __name__ == "__main__":
     print Regex.parseString("* | 'a + 'a ' ")
     print Symbol.parseString('\' ') # <---- TODO: This should work... ' ' can
