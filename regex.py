@@ -28,7 +28,7 @@ class Repetition(Production):
         if string == '':
             return True
 
-        return self.expr.matches(string[0:1]) or self.matches(string[1:])
+        return self.expr.matches(string[0:1]) or self.expr.matches(string[1:])
 
 class Alternative(Production):
     def __init__(self, left, right):
