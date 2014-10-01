@@ -1,3 +1,5 @@
+
+
 #!/usr/bin/env python
 
 """scanner.py: Contains scanner/lexer/tokenizer functions for reading from a file."""
