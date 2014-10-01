@@ -62,7 +62,7 @@ Expression = Group(OrExpression).setResultsName("Or") |\
              Group(EpsilonExpression).setResultsName("Epsilon") |\
              Group(SigmaExpression).setResultsName("Sigma")
 
-SigmaExpression = Word(alphas)
+SigmaExpression = Literal('\'').suppress() + Word(alphas)
 
 OrExpression = Literal('|') + Expression + Expression
 
