@@ -121,6 +121,8 @@ def BuildExpression(tokens):
 if __name__ == "__main__":
     tokens = Regex.parseString("+ 'a 'a")
     print tokens
-    print BuildExpression(tokens)
+    e, l = BuildExpression(tokens)
+    print e
+    print l
 #    print Symbol.parseString('\' ') # <---- TODO: This should work... ' ' can
                                     #             be part of the alphabet
