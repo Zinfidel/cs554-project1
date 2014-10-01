@@ -55,4 +55,5 @@ def ConstructAutomata(file):
     return Automata(fa.States, fa.Start, fa.Accept, fa.Transitions)
 
 if __name__ == "__main__":
-    print(ConstructAutomata("testdata/dfa2.txt"))
+    dfa = ConstructAutomata("testdata/dfa2.txt")
+    print dfa.nodes
