@@ -29,7 +29,7 @@ class Automata:
         return self.starts
 
     def isAcceptState(self, state):
-        return state in self.acceptStates
+        return state in self.accepts
 
     def hasTransition(self, fromState, toState):
         return not (fromState.getTransitions(toState) is None)
@@ -53,6 +53,12 @@ class AutomataNode:
         else:
             return None
 
+    def getTransitionState(self,input_string):
+        for state in self.transitions:
+            for symbol in self.transitions[state]:
+                if (symbol == input_string): return state
+        return None
+                
     def addTransition(self, toState, transSymbol):
         if toState in self.transitions:
             self.transitions[toState].append(transSymbol)
