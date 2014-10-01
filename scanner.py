@@ -123,7 +123,7 @@ if __name__ == "__main__":
     print tokens
     e, l = BuildExpression(tokens)
     print e
-    c = Concatenation(Sigma('a'), Repetition('a'))
+    c = Concatenation(Sigma('a'), Repetition(Sigma('a')))
     print c.matches('aa')
     print e.matches('a')
     print l
