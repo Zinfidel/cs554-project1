@@ -47,12 +47,6 @@ class AutomataNode:
     def __repr__(self):
         return str(self)
 
-    def getTransitions(self, state):
-        if state in self.transitions:
-            return self.transitions[state]
-        else:
-            return None
-
     def getTransitionState(self,input_string):
         for state in self.transitions:
             for symbol in self.transitions[state]:
