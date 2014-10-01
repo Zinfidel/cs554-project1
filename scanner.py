@@ -56,7 +56,7 @@ def ConstructAutomata(file):
 
 
 # Regex parsing:
-Regex = ZeroOrMore(Literal('*') | Literal('|') | Literal('+') | (Literal('\'') + Word(alphas + ' ')))
+Regex = ZeroOrMore(Literal('*') | Literal('|') | Literal('+') | (Literal('\'').suppress() + Word(alphas + ' ')))
 
 if __name__ == "__main__":
     print Regex.parseString("* | 'a + 'a ' ")
