@@ -15,7 +15,7 @@ end_keyword = Keyword("end;").suppress()
 # Alphabet definition
 alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end").suppress()
-Symbol = Literal("\'").suppress() + Word(alphas)
+Symbol = Literal("\'").suppress() + (White(exact=1) ^ Word(alphas, exact=1))
 SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 # example: ['a, 'b, 'c]
@@ -88,7 +88,7 @@ def BuildExpression(tokens):
         # build the appropriate expression for the left argument to the concat
         # operation and return the leftover tokens
         leftSide, leftover = BuildExpression(tokens[1:])
-       
+
         # Make sure we have tokens to consume, otherwise an error
         if len(leftover) == 0:
             raise Error('''No more tokens found after building the left hand side of
@@ -119,7 +119,7 @@ def BuildExpression(tokens):
     # values
     else:
         return Sigma(t), tokens[1:]
-        
+
 
 
 if __name__ == "__main__":
@@ -127,8 +127,8 @@ if __name__ == "__main__":
     print tokens
     e, l = BuildExpression(tokens)
     print e
-    print c.matches('aa')
+    # print c.matches('aa')
     print e.matches('aaaaaa')
     print l
-#    print Symbol.parseString('\' ') # <---- TODO: This should work... ' ' can
+    print Symbol.parseString('\' ') # <---- TODO: This should work... ' ' can
                                     #             be part of the alphabet
