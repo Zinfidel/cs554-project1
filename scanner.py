@@ -104,9 +104,8 @@ def ConstructRegex(file):
        
        The supplied input an be a file object or a URI.
     """
-    regex_tokens = Regex.parseFile(file)
-    r, leftover = BuildExpression(regex_tokens)
-    pass
+    regex_tokens = Regex.parseString(file)
+    return BuildExpression(regex_tokens)
 
 
 def BuildExpression(tokens):
@@ -165,6 +164,11 @@ if __name__ == "__main__":
     # # print c.matches('aa')
     # print e.matches('aaaaaa')
     # print l
-    # print Symbol.parseString('\' ')  # <---- TODO: This should work... ' ' can
+    # print Symbol.parseString('\' ')
     # # be part of the alphabet
-    print LexicalDescription.parseFile("testdata/lexdesc1.txt")
+
+    from lexical_desc import *
+
+    tokens = LexicalDescription.parseFile("testdata/lexdesc1.txt")
+    lexdec = LexicalDesc(tokens.Name, tokens.Alphabet, tokens.Classes)
+    print [str(ld) for ld in lexdec.classes]
