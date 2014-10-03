@@ -1,7 +1,7 @@
 class Automata:
     """Represents a finite automaton."""
 
-    def __init__(self, states, starts, accepts, transitions):
+    def __init__(self, states=[], starts=[], accepts=[], transitions=[]):
         self.starts = starts
         """List of names of starting states for the automata."""
 
