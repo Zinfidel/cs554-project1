@@ -54,7 +54,7 @@ Transitions = transitions_keyword + TransitionList + end_keyword
 automata_keyword = Keyword("dfa").suppress() ^ Keyword("nfa").suppress()
 FiniteAutomata = automata_keyword \
                  + Group(States).setResultsName("States") \
-                 + Group(InitialState).setResultsName("Start") \
+                 + InitialState.setResultsName("Start") \
                  + Group(AcceptingStates).setResultsName("Accept") \
                  + Group(Transitions).setResultsName("Transitions") \
                  + Group(Alphabet).setResultsName("Alphabet")
@@ -171,4 +171,4 @@ if __name__ == "__main__":
 
     tokens = LexicalDescription.parseFile("testdata/lexdesc1.txt")
     lexdec = LexicalDesc(tokens.Name, tokens.Alphabet, tokens.Classes)
-    print [str(ld) for ld in lexdec.classes]
+    print [str(re.regex[0]) for re in lexdec.classes]
