@@ -168,7 +168,11 @@ if __name__ == "__main__":
     # # be part of the alphabet
 
     from lexical_desc import *
+    from thompsons_construction import *
 
     tokens = LexicalDescription.parseFile("testdata/lexdesc1.txt")
     lexdec = LexicalDesc(tokens.Name, tokens.Alphabet, tokens.Classes)
-    print [str(re.regex[0]) for re in lexdec.classes]
+    base = lexdec.classes[0].regex[0]
+    print base
+    base_nfa = convertRegexToNFA(base)
+    print base_nfa

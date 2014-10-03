@@ -39,6 +39,10 @@ class Automata:
     def hasTransition(self, fromState, toState):
         return not (self.nodes[fromState].getTransitions(toState) is None)
 
+    def addNodes(self, nodes):
+        """Adds supplied nodes (already constructed) to the automata. Expects a list."""
+        for node in nodes:
+            self.nodes[node.name] = node
 
 class AutomataNode:
     def __init__(self, name):
