@@ -15,7 +15,7 @@ end_keyword = Keyword("end;").suppress()
 # Alphabet definition
 alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end;").suppress() | Keyword("end").suppress()
-Symbol = Combine(Literal("\'") + Optional(Literal("\\")) + Word(alphas + " ", exact=1))
+Symbol = Combine(Literal("\'") + Optional(Literal("\\")) + Word(printables + " ", exact=1))
 SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 # example: ['a, 'b, 'c]
