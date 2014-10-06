@@ -8,10 +8,10 @@ class Automata:
         if transitions is None: transitions = []
 
         self.start = start
-        """Starting state for this automata."""
+        """Starting state for this automata. This is the name of the node as a string."""
 
         self.accepts = accepts
-        """List of names of accepting states for the automata."""
+        """List of names of accepting states for the automata. These are strings."""
 
         self.nodes = {name: AutomataNode(name) for name in states}
         """Dictionary of nodes in the automata. The key is the state name, the value is the node object."""
@@ -44,27 +44,40 @@ class Automata:
         for node in nodes:
             self.nodes[node.name] = node
 
+
 class AutomataNode:
     def __init__(self, name):
         self.name = name
+        """Name of this state. This should uniquely identify this state."""
+
         self.transitions = {}
+        """Dictionary of symbol keys that returns lists of states."""
 
     def __str__(self):
-        # TODO: Not a very good representation of the node.
-        return str([(str(symbol) + " -> " + toState) for toState, symbol in self.transitions.items()])
+        return self.name
 
     def __repr__(self):
-        return str(self)
+        return self.name
+        # return str([(str(symbol) + " -> " + toState) for toState, symbol in self.transitions.items()])
+
+    def __hash__(self):
+        # Hash based entirely off of state name, as names *should* be unique.
+        return hash(self.name)
+
+    def __eq__(self, other):
+        # Equality based entirely off of state name, as names *should* be unique.
+        return self.name == other.name
 
     def getTransitionState(self, input_string):
-        for state in self.transitions:
-            for symbol in self.transitions[state]:
-                if symbol == input_string: return state
-        return None
+        """Returns the state traversed to on a given input symbol, or none if no such transition exists."""
+        if input_string in self.transitions:
+            return self.transitions[input_string]
+        else:
+            return None
 
     def addTransition(self, toState, transSymbol):
-
-        if toState in self.transitions:
-            self.transitions[toState].append(transSymbol)
+        """Adds a transition to this state."""
+        if transSymbol in self.transitions:
+            self.transitions[transSymbol].append(toState)
         else:
-            self.transitions[toState] = [transSymbol]
+            self.transitions[transSymbol] = [toState]
