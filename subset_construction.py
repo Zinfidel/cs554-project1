@@ -32,19 +32,39 @@ def epsilonClosure(state, visitedStates, nfa):
     return reachableStates
 
 
-def move(states, input):
+def move(states, symbol, nfa):
     """ For a given set of states, returns all states reachable on a given input.
 
-        :param list[AutomataNode] states: Set of states to transition from.
-        :param str input: Input symbol over which to transition.
-        :rtype: list[AutomataNode]
+        :param set[AutomataNode] states: Set of states to transition from.
+        :param str symbol: Input symbol over which to transition.
+        :param Automata nfa: The automaton that states belongs to.
+        :rtype: set[AutomataNode]
     """
+
+    reachableStates = set()
+
+    for state in states:
+        if symbol in state.transitions:
+            # List comprehension so that we can get state objects back instead of strings.
+            reachableStates |= set([nfa.nodes[name] for name in state.transitions[symbol]])
+
+    return reachableStates
 
 
 def ConvertNfaToDfa(nfa):
-    # TODO: Implement
+
     pass
 
+
+def stateSetName(states):
+    """ Creates a name for a state derived from a supplied set of states. The name is order-independent.
+        :param set[AutomataNode] states: The states to derive a name from.
+        :rtype: str
+    """
+    namesList = str(sorted(list(states)))    # set([c, b, a]) -> [a, b, c]
+    namesList = namesList.replace(' ', '')   # [a, b, c]      -> [a,b,c]
+    namesList = (namesList[1:])[:-1]         # [a,b,c]        -> a,b,c
+    return namesList
 
 
 if __name__ == "__main__":
@@ -63,4 +83,7 @@ if __name__ == "__main__":
     testNFA = Automata()
     testNFA.addNodes([s0, s1, s2, s3, s4])
 
-    print epsilonClosure(s0, set(), testNFA)
+    print move(set([s2]), 'b', testNFA)
+    closure = epsilonClosure(s0, set(), testNFA)
+    print closure
+    print stateSetName(closure)
