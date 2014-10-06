@@ -26,6 +26,7 @@ def epsilonClosure(state, visitedStates, nfa):
     if EPSILON in state.transitions:
         for nextState in state.transitions[EPSILON]:
             if nfa.nodes[nextState] not in visitedStates:
+                # Set data structure automatically discards duplicates.
                 reachableStates |= epsilonClosure(nfa.nodes[nextState], visitedStates, nfa)
 
     return reachableStates
@@ -39,6 +40,10 @@ def move(states, input):
         :rtype: list[AutomataNode]
     """
 
+
+def ConvertNfaToDfa(nfa):
+    # TODO: Implement
+    pass
 
 
 

@@ -97,8 +97,6 @@ def ConstructAutomata(file):
     return Automata(fa.States, fa.Start, fa.Accept, fa.Transitions)
 
 
-
-
 def ConstructRegex(file):
     """Parses the supplied regex, and constructs the appropriate Regex data structure found in ./regex.py
        
