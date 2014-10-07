@@ -52,8 +52,29 @@ def move(states, symbol, nfa):
 
 
 def ConvertNfaToDfa(nfa):
+    """ Converts an NFA into a DFA via epsilon closure and subset construction.
+        :param Automata nfa: The non-deterministic finite automata to convert.
+        :rtype Automata
+    """
 
-    pass
+    dfa = Automata()
+    nameToStates = dict()
+    markedStates = set()
+    unmarkedStates = set()
+
+    # Create initial state from epsilon closure over NFA initial state. Add its name to the states map
+    initStateClosure = epsilonClosure(nfa.nodes[nfa.start], set(), nfa)
+    dfaInitStateName = stateSetName(initStateClosure)
+    dfaInitState = Automata(dfaInitStateName)
+
+    #
+    nameToStates[dfaInitStateName] = initStateClosure
+    unmarkedStates |= initStateClosure
+
+    while unmarkedStates:
+        state = unmarkedStates.pop()
+
+
 
 
 def stateSetName(states):
