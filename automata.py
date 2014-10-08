@@ -1,17 +1,21 @@
 class Automata:
     """Represents a finite automaton."""
 
-    def __init__(self, states=None, start="", accepts=None, transitions=None):
-        # Take care of default arguments.
-        if states is None: states = []
-        if accepts is None: accepts = []
-        if transitions is None: transitions = []
-
-        self.start = start
-        """Starting state for this automata."""
+    def __init__(self, states, starts, accepts, transitions,alphabet):
+        self.starts = starts
+        """List of names of starting states for the automata."""
+        
+        self.states = states
+        """List of names of states for the automata."""
 
         self.accepts = accepts
         """List of names of accepting states for the automata."""
+        
+        self.alphabet = alphabet
+        """List of names of accepting alphabet for the automata."""
+        
+        self.transitions = transitions
+        """List of the transitions for the automata."""
 
         self.nodes = {name: AutomataNode(name) for name in states}
         """Dictionary of nodes in the automata. The key is the state name, the value is the node object."""
@@ -23,26 +27,22 @@ class Automata:
                 self.nodes[fromState].addTransition(toState, symbol)
 
     def __str__(self):
-        return "Start: " + str(self.start) \
-               + " Accept: " + str(self.accepts) \
+        return "Start: " + str(self.starts)\
+               + " Accept: " + str(self.accepts)\
                + " States: " + str(self.nodes)
 
     def getAllStates(self):
         return self.nodes
 
-    def getStartState(self):
-        return self.start
+    def getStartStates(self):
+        return self.starts
 
     def isAcceptState(self, state):
         return state in self.accepts
 
     def hasTransition(self, fromState, toState):
-        return not (self.nodes[fromState].getTransitions(toState) is None)
+        return not (fromState.getTransitions(toState) is None)
 
-    def addNodes(self, nodes):
-        """Adds supplied nodes (already constructed) to the automata. Expects a list."""
-        for node in nodes:
-            self.nodes[node.name] = node
 
 class AutomataNode:
     def __init__(self, name):
@@ -56,14 +56,19 @@ class AutomataNode:
     def __repr__(self):
         return str(self)
 
-    def getTransitionState(self, input_string):
+    def getTransitions(self, state):
+        if state in self.transitions:
+            return self.transitions[state]
+        else:
+            return None
+
+    def getTransitionState(self,input_string):
         for state in self.transitions:
             for symbol in self.transitions[state]:
-                if symbol == input_string: return state
+                if (symbol == input_string): return state
         return None
-
+                
     def addTransition(self, toState, transSymbol):
-
         if toState in self.transitions:
             self.transitions[toState].append(transSymbol)
         else:
