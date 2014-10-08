@@ -20,6 +20,10 @@ class Automata:
         self.alphabet = set(alphabet)
         """A set of symbols that comprise the alphabet for this automaton."""
 
+        # Set the accept state flag for all nodes in the accept list.
+        for accState in accepts:
+            self.nodes[accState].accept = True
+
         # Populate the nodes' transition dictionaries.
         for trans in transitions:
             fromState, symbols, toState = trans[0], trans[1], trans[2]
@@ -50,12 +54,15 @@ class Automata:
 
 
 class AutomataNode:
-    def __init__(self, name):
+    def __init__(self, name, accept=False):
         self.name = name
         """Name of this state. This should uniquely identify this state."""
 
         self.transitions = {}
         """Dictionary of symbol keys that returns lists of states."""
+
+        self.accept = accept
+        """Indicates that this node is an accept state."""
 
     def __str__(self):
         return self.name

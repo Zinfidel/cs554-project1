@@ -51,30 +51,83 @@ def move(states, symbol, nfa):
     return reachableStates
 
 
-def ConvertNfaToDfa(nfa):
+def convertNfaToDfa(nfa):
     """ Converts an NFA into a DFA via epsilon closure and subset construction.
+        This code is based off of this pseudocode:
+
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+        D-States = EpsilonClosure(NFA Start State) and it is unmarked
+        while there are any unmarked states in D-States
+        {
+            mark T
+            for each input symbol a
+            {
+                U = EpsilonClosure(Move(T, a));
+                if U is not in D-States
+                {
+                    add U as an unmarked state to D-States
+                }
+            DTran[T,a] = U
+            }
+        }
+        '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
         :param Automata nfa: The non-deterministic finite automata to convert.
         :rtype Automata
     """
 
+    # The DFA being constructed.
     dfa = Automata()
+
+    # Maps new state names to the collection of states they encompass. During the construction of the
+    # new DFA, composite states such as {s0,s1,s2} can be created, which is itself just one state, but
+    # needs to point to each of the three states in the NFA it was constructed from.
     nameToStates = dict()
+
+    # Sets to keep track of states that are waiting to be processed, and that have been processed.
     markedStates = set()
     unmarkedStates = set()
 
-    # Create initial state from epsilon closure over NFA initial state. Add its name to the states map
+    # Create initial DFA state from epsilon closure over NFA initial state.
     initStateClosure = epsilonClosure(nfa.nodes[nfa.start], set(), nfa)
-    dfaInitStateName = stateSetName(initStateClosure)
-    dfaInitState = Automata(dfaInitStateName)
+    dfaInitState = AutomataNode(stateSetName(initStateClosure))
 
-    #
-    nameToStates[dfaInitStateName] = initStateClosure
-    unmarkedStates |= initStateClosure
+    # Add the initial composite state to the new DFA, the unmarked list, and the name map.
+    dfa.addNodes([dfaInitState])
+    unmarkedStates.add(dfaInitState)
+    nameToStates[dfaInitState.name] = initStateClosure
 
     while unmarkedStates:
+        # Mark the new state
         state = unmarkedStates.pop()
+        markedStates.add(state)
 
+        for symbol in nfa.alphabet:
+            # Generate set of states from epsilon closures over every state returned from this move.
+            # TODO: Optimzations here: don't bother with move/epsilonClosures if sets are empty (invalid symbol)
+            moveStates = move(nameToStates[state.name], symbol, nfa)
+            closureSet, visitedStates = set(), set()
+            for moveState in moveStates:
+                closureSet |= epsilonClosure(moveState, visitedStates, nfa)
 
+            # Generate new DFA state from combined epsilon closures.
+            newDfaState = AutomataNode(stateSetName(closureSet))
+
+            # If this new state is actually new, add new state to DFA, the unmarked list, and the name map.
+            # Also add this node to the accept list if it is based off of an accept node.
+            if (newDfaState not in unmarkedStates) and (newDfaState not in markedStates):
+                dfa.addNodes(newDfaState)
+                unmarkedStates.add(newDfaState)
+                nameToStates[newDfaState.name] = closureSet.copy()
+
+                for node in closureSet:
+                    if node.accept:
+                        newDfaState.accept = True
+                        dfa.accepts.append(newDfaState.name)
+                        break
+
+            # Add the transition to this (new) state.
+            state.addTransition(newDfaState, symbol)
 
 
 def stateSetName(states):
@@ -89,22 +142,25 @@ def stateSetName(states):
 
 
 if __name__ == "__main__":
-    s0 = AutomataNode('s0')
+    # Recreate NFA from website
     s1 = AutomataNode('s1')
     s2 = AutomataNode('s2')
     s3 = AutomataNode('s3')
     s4 = AutomataNode('s4')
+    s5 = AutomataNode('s5')
 
-    s0.addTransition('s1', EPSILON)
-    s0.addTransition('s2', EPSILON)
-    s1.addTransition('s3', EPSILON)
-    s2.addTransition('s4', 'b')
-    s3.addTransition('s4', 'a')
+    s1.addTransition('s2', EPSILON)
+    s1.addTransition('s4', EPSILON)
+    s2.addTransition('s3', 'a')
+    s3.addTransition('s3', 'b')
+    s4.addTransition('s4', 'a')
+    s4.addTransition('s5', 'b')
+
+    s3.accept = True
+    s5.accept = True
 
     testNFA = Automata()
-    testNFA.addNodes([s0, s1, s2, s3, s4])
+    testNFA.start = s1
+    testNFA.addNodes([s1, s2, s3, s4, s5])
 
-    print move(set([s2]), 'b', testNFA)
-    closure = epsilonClosure(s0, set(), testNFA)
-    print closure
-    print stateSetName(closure)
+    testDFA = convertNfaToDfa(testNFA)
