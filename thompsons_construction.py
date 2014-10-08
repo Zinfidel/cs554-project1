@@ -13,7 +13,6 @@ When combining nfas, instead of creating an all new automaton, the "left" automa
 of the "right" automata's states and the right automata will be discarded. The left automata then acts as
 the new combined nfa.
 '''
-# TODO: Add cute ASCII art automata or make docstrings more explicit as to what the hell all this is.
 
 
 EPSILON = '\0'
@@ -33,13 +32,16 @@ def constructCharacter(character):
        :rtype Automata
     """
 
-    # Create two states with transition, and install them in an NFA.
+    # Create two states with transition between them.
     s0, s1 = AutomataNode(__nextName()), AutomataNode(__nextName())
     s0.addTransition(s1.name, character)
+
+    # Install the states into an nfa.
     nfa = Automata()
     nfa.addNodes([s0, s1])
     nfa.start = s0.name
     nfa.accepts = [s1.name]
+    nfa.alphabet.add(character)
 
     return nfa
 
@@ -54,6 +56,7 @@ def constructConcatenation(left, right):
     # Merge the right automata into the left.
     left.addNodes(right.nodes.values())
     left.accepts = right.accepts
+    left.alphabet |= right.alphabet
 
     # Add an epsilon transition from the accept state of left to the start state of the right.
     left.nodes[left.accepts[0]].addTransition(right.start, EPSILON)
@@ -70,6 +73,7 @@ def constructAlternative(left, right):
 
     # Merge the right automata into the left.
     left.addNodes(right.nodes.values())
+    left.alphabet |= right.alphabet
 
     # New start and accept states
     newStart, newAccept = AutomataNode(__nextName()), AutomataNode(__nextName())
@@ -134,15 +138,12 @@ def convertRegexToNFA(node):
         right = convertRegexToNFA(node.right)
         return constructConcatenation(left, right)
     else:
-        # TODO: How do we handle the null expression?
         pass
 
 
 if __name__ == "__main__":
-    accept_a, accept_b = constructCharacter('a'), constructCharacter('b')
-    print accept_a
-    print accept_b
+    s0, s1, s2 = constructCharacter('a'), constructCharacter('b'), constructCharacter('c')
+    concat = constructConcatenation(s0, s1)
+    union = constructAlternative(concat, s2)
 
-    # print constructConcatenation(accept_a, accept_b)
-    # print constructAlternative(accept_a, accept_b)
-    print constructRepetition(accept_a)
+    print union.alphabet

@@ -5,6 +5,7 @@
 from pyparsing import *
 from automata import Automata
 from regex import *
+from lexical_desc import LexicalDesc
 
 #######################
 # General definitions #
@@ -94,7 +95,7 @@ def ConstructAutomata(file):
        The supplied file can either be a file object, or a URI.
     """
     fa = FiniteAutomata.parseFile(file)
-    return Automata(fa.States, fa.Start, fa.Accept, fa.Transitions)
+    return Automata(fa.States, fa.Start, fa.Accept, fa.Transitions, fa.Alphabet)
 
 
 def ConstructRegex(file):
@@ -104,6 +105,14 @@ def ConstructRegex(file):
     """
     regex_tokens = Regex.parseString(file)
     return BuildExpression(regex_tokens)
+
+
+def ConstructLexicalDescription(file):
+    """Parses the supplied lexical description file, then constructs and returns a lexical description object.
+       The supplied file can either be a file object, or a URI.
+    """
+    lexDesc = LexicalDescription.parseFile(file)
+    return LexicalDesc(lexDesc.Name, lexDesc.Alphabet, lexDesc.Classes)
 
 
 def BuildExpression(tokens):
@@ -155,22 +164,4 @@ def BuildExpression(tokens):
 
 
 if __name__ == "__main__":
-    # tokens = Regex.parseString("+ 'a * 'a")
-    # print tokens
-    # e, l = BuildExpression(tokens)
-    # print e
-    # # print c.matches('aa')
-    # print e.matches('aaaaaa')
-    # print l
-    # print Symbol.parseString('\' ')
-    # # be part of the alphabet
-
-    from lexical_desc import *
-    from thompsons_construction import *
-
-    tokens = LexicalDescription.parseFile("testdata/lexdesc1.txt")
-    lexdec = LexicalDesc(tokens.Name, tokens.Alphabet, tokens.Classes)
-    base = lexdec.classes[0].regex[0]
-    print base
-    base_nfa = convertRegexToNFA(base)
-    print base_nfa
+    pass

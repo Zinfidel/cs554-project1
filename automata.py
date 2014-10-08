@@ -1,11 +1,12 @@
 class Automata:
     """Represents a finite automaton."""
 
-    def __init__(self, states=None, start="", accepts=None, transitions=None):
-        # Take care of default arguments.
+    def __init__(self, states=None, start="", accepts=None, transitions=None, alphabet=None):
+        # Take care of default arguments - avoids issue of defaults being mutable/evaluated once.
         if states is None: states = []
         if accepts is None: accepts = []
         if transitions is None: transitions = []
+        if alphabet is None: alphabet = []
 
         self.start = start
         """Starting state for this automata. This is the name of the node as a string."""
@@ -15,6 +16,9 @@ class Automata:
 
         self.nodes = {name: AutomataNode(name) for name in states}
         """Dictionary of nodes in the automata. The key is the state name, the value is the node object."""
+
+        self.alphabet = set(alphabet)
+        """A set of symbols that comprise the alphabet for this automaton."""
 
         # Populate the nodes' transition dictionaries.
         for trans in transitions:
