@@ -31,9 +31,11 @@ class Automata:
                 self.nodes[fromState].addTransition(toState, symbol)
 
     def __str__(self):
-        return "Start: " + str(self.start) \
-               + " Accept: " + str(self.accepts) \
-               + " States: " + str(self.nodes)
+        ret = "Automaton:\n"
+        ret += "Start:  " + self.start + '\n'
+        ret += "Accept: " + str(self.accepts) + '\n'
+        ret += "States: " + str([val.name for val in self.nodes.values()])
+        return ret
 
     def getAllStates(self):
         return self.nodes
@@ -68,8 +70,13 @@ class AutomataNode:
         return self.name
 
     def __repr__(self):
-        return self.name
-        # return str([(str(symbol) + " -> " + toState) for toState, symbol in self.transitions.items()])
+        ret = "Node:   " + self.name + '\n'
+        ret += "Accept: " + str(self.accept) + '\n'
+        ret += "Transitions:\n"
+        for key in self.transitions.keys():
+            ret += "  " + key + " -> " + str([state.name for state in self.transitions[key]]) + '\n'
+
+        return ret
 
     def __hash__(self):
         # Hash based entirely off of state name, as names *should* be unique.
