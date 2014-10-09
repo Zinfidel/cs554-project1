@@ -14,7 +14,7 @@ def epsilonClosure(state, visitedStates, nfa):
         :param AutomataNode state: Initial state.
         :param set[AutomataNode] visitedStates: Set of states already visited.
         :param Automata nfa: The automaton that state belongs to.
-        :rtype set[AutomataNode]
+        :rtype: set[AutomataNode]
     """
 
     reachableStates = set()     # Stores all states that can be reached via epsilon transition from this state.
@@ -73,7 +73,7 @@ def convertNfaToDfa(nfa):
         '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
         :param Automata nfa: The non-deterministic finite automata to convert.
-        :rtype Automata
+        :rtype: Automata
     """
 
     # The DFA being constructed.
@@ -128,6 +128,8 @@ def convertNfaToDfa(nfa):
 
             # Add the transition to this (new) state.
             state.addTransition(newDfaState, symbol)
+
+    return dfa
 
 
 def stateSetName(states):

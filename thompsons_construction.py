@@ -29,7 +29,7 @@ def __nextName():
 def constructCharacter(character):
     """Constructs a character transition automaton.
        :param str character: Transition character.
-       :rtype Automata
+       :rtype: Automata
     """
 
     # Create two states with transition between them.
@@ -50,7 +50,7 @@ def constructConcatenation(left, right):
     """Constructs a concatenation automaton from two other automata.
        :param Automata left: Left side automaton to concatenate.
        :param Automata right: Right side automaton to concatenate.
-       :rtype Automata
+       :rtype: Automata
     """
 
     # Merge the right automata into the left.
@@ -68,7 +68,7 @@ def constructAlternative(left, right):
     """Constructs an alternative automaton from two other automata.
        :param Automata left: Left side automaton to alternate.
        :param Automata right: Right side automaton to alternate.
-       :rtype Automata
+       :rtype: Automata
     """
 
     # Merge the right automata into the left.
@@ -96,7 +96,7 @@ def constructAlternative(left, right):
 def constructRepetition(left):
     """Constructs an alternative automaton from two other automata.
        :param Automata left: Left side automaton to alternate.
-       :rtype Automata
+       :rtype: Automata
     """
 
     # New start and accept states
@@ -121,7 +121,7 @@ def constructRepetition(left):
 def convertRegexToNFA(node):
     """Constructs an NFA from a supplied regular expression tree.
        :param Production node: The current node of the regular expression tree being evaluated.
-       :rtype Automata
+       :rtype: Automata
     """
 
     if isinstance(node, Sigma):
