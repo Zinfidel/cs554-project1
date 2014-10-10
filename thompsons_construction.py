@@ -56,7 +56,8 @@ def constructConcatenation(left, right):
     left.accepts = right.accepts
 
     # Add an epsilon transition from the accept state of left to the start state of the right.
-    left.nodes[left.accepts[0]].addTransition(right.start, EPSILON)
+    for node in left.accepts:
+        left.nodes[node].addTransition(right.start, EPSILON)
 
     return left
 
