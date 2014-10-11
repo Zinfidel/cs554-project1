@@ -1,7 +1,7 @@
 from automata import Automata
-import scanner
+import description_reader
 
-dfa = scanner.ConstructAutomata("testdata/dfa_x.txt")
+dfa = description_reader.ConstructAutomata("testdata/dfa_x.txt")
 P = [set(dfa.accepts),set(dfa.states).difference(set(dfa.accepts))]
 W = []
 if len(set(dfa.accepts)) > 1 : W.append(set(dfa.accepts))

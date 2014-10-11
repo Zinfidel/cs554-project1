@@ -1,4 +1,4 @@
-import scanner
+import description_reader
 
 
 def dfa_valid_string(automata, testing_string, current_state, current_step):
@@ -12,7 +12,7 @@ def dfa_valid_string(automata, testing_string, current_state, current_step):
         else: return dfa_valid_string(automata, testing_string, next_state, current_step + 1)
 
 if __name__ == "__main__":
-    dfa = scanner.ConstructAutomata("testdata/dfa2.txt")
+    dfa = description_reader.ConstructAutomata("testdata/dfa2.txt")
     start = dfa.getStartState()[0]
     string = "aaaaaaaa"
     print dfa_valid_string(dfa, string, start, 0)
