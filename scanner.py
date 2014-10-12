@@ -26,9 +26,28 @@ class LexicalDesc:
                 string left after scanning completely) an empty list will be
                 returned.
         '''
-        
-        
-        pass
+        if string_to_scan == '':
+            return tokens
+
+        '''
+           Represents the leftmost parse of the parse tree. 
+        '''
+        for c in self.classes:
+            matched, leftover = c.regex.consume(string_to_scan)
+
+            #if we do get a match using the regex
+            if matched != '':
+                new_tokens = tokens + [Token(matched, c.name, c.relevance)]
+                recursive_scan = self.scan(leftover, new_tokens)
+                if recursive_scan != []:
+                    return recursive_scan
+
+        ''' If we get here, that means there was no logical parse
+            using the regexes we were given. We should return an error
+            at this point. An empty list of tokens means this was not
+            successful in 
+        '''
+        return []
 
 
 class LexicalClass:
@@ -53,7 +72,7 @@ class Token:
        defined in the lexical desciption of the grammar
     '''
 
-    def __init__(self, string, lex_class, relevance):
+    def __init__(self, string, lex_class_name, relevance):
         self.string = string
         self.lexical_class = lex_class
         self.relevance = relevance
