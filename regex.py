@@ -1,5 +1,8 @@
 
 class Production:
+    '''
+    Defines the base class that all Regex inherit from. 
+    '''
     def __init__(self, alphabet):
         self.alphabet = alphabet
 
