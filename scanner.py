@@ -1,4 +1,4 @@
-from description_reader import BuildExpression
+from regex import BuildExpression
 
 
 class LexicalDesc:
