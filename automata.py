@@ -20,6 +20,9 @@ class Automata:
         self.alphabet = set(alphabet)
         """A set of symbols that comprise the alphabet for this automaton."""
 
+        self.transitions = transitions
+        """The transitions in raw, lexed form. This is necessary for some algorithms (Hopcroft's)"""
+
         # Set the accept state flag for all nodes in the accept list.
         for accState in accepts:
             self.nodes[accState].accept = True
