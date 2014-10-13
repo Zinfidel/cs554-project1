@@ -1,4 +1,5 @@
 from regex import BuildExpression
+import description_reader
 
 class LexicalDesc:
     """Encapsulates a complete lexical description."""
@@ -81,7 +82,7 @@ class Token:
         return "Class: " + str(self.lexical_class) + "\n\tString: " + str(self.string)
 
 if __name__ == "__main__":
-    desc = LexicalDescription.parseFile("./testdata/tiny_basic_lex_desc.txt")
+    desc = description_reader.LexicalDescription.parseFile("./testdata/tiny_basic_lex_desc.txt")
     tiny_basic = LexicalDesc(desc.Name, desc.Alphabet, desc.Classes)
 #    print tiny_basic.classes[0].regex.consume("LET")
     f = open('./testdata/tinyBasicProgram.txt')
@@ -89,5 +90,7 @@ if __name__ == "__main__":
 
     print basic_program
 
+    #TODO -- TEB: fails when scanning due to newline characters not being
+    #             recongized. 
     for c in tiny_basic.scan(basic_program):
         print c
