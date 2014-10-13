@@ -74,7 +74,7 @@ class AutomataNode:
         ret += "Accept: " + str(self.accept) + '\n'
         ret += "Transitions:\n"
         for key in self.transitions.keys():
-            ret += "  " + key + " -> " + str([state.name for state in self.transitions[key]]) + '\n'
+            ret += "  " + key + " -> " + str([state for state in self.transitions[key]]) + '\n'
 
         return ret
 

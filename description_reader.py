@@ -16,16 +16,17 @@ end_keyword = Keyword("end;").suppress()
 # Alphabet definition
 alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end;").suppress() | Keyword("end").suppress()
-Symbol = Combine(Literal("\'") + Optional(Literal("\\")) + Word(printables + " ", exact=1))
+Symbol = Combine(Literal("\'").suppress() + Optional(Literal("\\")) + Word(printables + " ", exact=1))
 SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 # example: ['a, 'b, 'c]
 
 # Regex definition:
+RegexSymbol = Combine(Literal("\'") + Optional(Literal("\\")) + Word(printables + " ", exact=1))
 Regex = ZeroOrMore(Literal('*') ^
                    Literal('|') ^
                    Literal('+') ^
-                   Symbol)
+                   RegexSymbol)
 # example: ['b, +, *, |, 'a, 'o, 'r]
 
 
@@ -92,16 +93,20 @@ LexicalDescription = language_keyword \
 
 def ConstructAutomata(file):
     """Parses the supplied automata file, then constructs and returns an Automata object.
-       The supplied file can either be a file object, or a URI.
+
+       :param str | file file: File object or URI.
+       :rtype: Automata
     """
     fa = FiniteAutomata.parseFile(file)
-    return Automata(fa.States, fa.Start, fa.Accept, fa.Transitions, fa.Alphabet)
+    # Note on fa.Start: parseResult objects always return values in lists, so this must be dereferenced.
+    return Automata(fa.States, fa.Start[0], fa.Accept, fa.Transitions, fa.Alphabet)
 
 
 def ConstructRegex(file):
     """Parses the supplied regex, and constructs the appropriate Regex data structure found in ./regex.py
        
-       The supplied input an be a file object or a URI.
+       :param str | file file: File object or URI.
+       :rtype: Regex
     """
     regex_tokens = Regex.parseString(file)
     return BuildExpression(regex_tokens)
@@ -109,59 +114,13 @@ def ConstructRegex(file):
 
 def ConstructLexicalDescription(file):
     """Parses the supplied lexical description file, then constructs and returns a lexical description object.
-       The supplied file can either be a file object, or a URI.
+
+       :param str | file file: File object or URI.
+       :rtype: LexicalDesc
     """
     lexDesc = LexicalDescription.parseFile(file)
+    print lexDesc
     return LexicalDesc(lexDesc.Name, lexDesc.Alphabet, lexDesc.Classes)
 
-
-def BuildExpression(tokens):
-    """Builds an expression from a list of tokens using a one token look ahead
-       strategy. 
-
-       tokens: Expected to be a list of string tokens (ie: ['+', 'a', 'a'])
-    """
-    t = tokens[0]
-
-    # E -> + E E
-    if t == '+':
-        # TODO: Clean this up
-        #        return BuildConcatenation(tokens[1:])a
-        # build the appropriate expression for the left argument to the concat
-        # operation and return the leftover tokens
-        leftSide, leftover = BuildExpression(tokens[1:])
-
-        # Make sure we have tokens to consume, otherwise an error
-        if len(leftover) == 0:
-            raise Exception('No more tokens found after building the left hand side\
-                            of a ConcatExpression')
-        # Build the right hand side of the ConcatExpression
-        rightSide, leftover = BuildExpression(leftover)
-        return Concatenation(leftSide, rightSide), leftover
-    # E -> | E E
-    elif t == '|':
-
-        leftSide, leftover = BuildExpression(tokens[1:])
-
-        # Make sure we have tokens to consume, otherwise an error
-        if len(leftover) == 0:
-            raise Exception('No more tokens found after building the left hand\
-                             side of a ConcatExpression')
-
-        rightSide, leftover = BuildExpression(leftover)
-        return Alternative(leftSide, rightSide), leftover
-    # E -> * E
-    elif t == '*':
-        e, leftover = BuildExpression(tokens[1:])
-        return Repetition(e), leftover
-    # E -> _ (empty, not underscore)
-    elif t == '':
-        return NilExpression(), tokens[1:]
-    # E -> sigma (where sigma is some symbol that doesn't match the previous
-    # values
-    else:
-        return Sigma(t[1:]), tokens[1:]
-
-
 if __name__ == "__main__":
-    pass
+    ConstructLexicalDescription("testdata/lexdesc2.txt")

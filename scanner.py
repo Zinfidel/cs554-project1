@@ -1,4 +1,4 @@
-from description_reader import *
+from regex import BuildExpression
 
 class LexicalDesc:
     """Encapsulates a complete lexical description."""
@@ -89,5 +89,5 @@ if __name__ == "__main__":
 
     print basic_program
 
-    for c in tiny_basic.scan("60 IF A <= 100 THEN GOTO 50"):
+    for c in tiny_basic.scan(basic_program):
         print c

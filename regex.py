@@ -1,4 +1,3 @@
-
 class Production:
     '''
     Defines the base class that all Regex inherit from. 
@@ -119,6 +118,54 @@ class NilExpression(Production):
 
     def consume(self, string):
         return '', string
+
+
+def BuildExpression(tokens):
+    """Builds an expression from a list of tokens using a one token look ahead
+       strategy.
+
+       tokens: Expected to be a list of string tokens (ie: ['+', 'a', 'a'])
+    """
+    t = tokens[0]
+
+    # E -> + E E
+    if t == '+':
+        # TODO: Clean this up
+        #        return BuildConcatenation(tokens[1:])a
+        # build the appropriate expression for the left argument to the concat
+        # operation and return the leftover tokens
+        leftSide, leftover = BuildExpression(tokens[1:])
+
+        # Make sure we have tokens to consume, otherwise an error
+        if len(leftover) == 0:
+            raise Error('''No more tokens found after building the left hand side of
+                           a ConcatExpression''')
+        # Build the right hand side of the ConcatExpression
+        rightSide, leftover = BuildExpression(leftover)
+        return Concatenation(leftSide, rightSide), leftover
+    # E -> | E E
+    elif t == '|':
+
+        leftSide, leftover = BuildExpression(tokens[1:])
+
+        # Make sure we have tokens to consume, otherwise an error
+        if len(leftover) == 0:
+            raise Error('''No more tokens found after building the left hand side of
+                           a ConcatExpression''')
+
+        rightSide, leftover = BuildExpression(leftover)
+        return Alternative(leftSide, rightSide), leftover
+    # E -> * E
+    elif t == '*':
+        e, leftover = BuildExpression(tokens[1:])
+        return Repetition(e), leftover
+    # E -> _ (empty, not underscore)
+    elif t == '':
+        return NilExpression(), tokens[1:]
+    # E -> sigma (where sigma is some symbol that doesn't match the previous
+    # values
+    else:
+        return Sigma(t), tokens[1:]
 
 
 if __name__ == "__main__":
