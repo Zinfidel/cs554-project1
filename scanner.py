@@ -14,6 +14,41 @@ class LexicalDesc:
         self.alphabet = alphabet
         self.classes = [LexicalClass(c[0], c[1], c[2]) for c in classes]
 
+    def scan(self, string_to_scan, tokens=[]):
+        '''
+        Scans a string and produces a list of Tokens parsed from
+        the string. 
+
+        :param string_to_scan the string that will be turned into a list 
+               of Token objects. 
+        :return a list of Token object recognized by the string. If the
+                string cannot be fully recognized (ie, there is part of the
+                string left after scanning completely) an empty list will be
+                returned.
+        '''
+        if string_to_scan == '':
+            return tokens
+
+        '''
+           Represents the leftmost parse of the parse tree. 
+        '''
+        for c in self.classes:
+            matched, leftover = c.regex.consume(string_to_scan)
+
+            #if we do get a match using the regex
+            if matched != '':
+                new_tokens = tokens + [Token(matched, c.name, c.relevance)]
+                recursive_scan = self.scan(leftover, new_tokens)
+                if recursive_scan != []:
+                    return recursive_scan
+
+        ''' If we get here, that means there was no logical parse
+            using the regexes we were given. We should return an error
+            at this point. An empty list of tokens means this was not
+            successful in 
+        '''
+        return []
+
 
 class LexicalClass:
     """Describes a lexical class using a regular expression."""
@@ -30,3 +65,14 @@ class LexicalClass:
 
     def __str__(self):
         return "Name: " + self.name + ", Regex: " + str(self.regex) + ", Relevance: " + self.relevance
+
+
+class Token:
+    '''Essentially a tuple of a String, LexicalClass, and a relevance as
+       defined in the lexical desciption of the grammar
+    '''
+
+    def __init__(self, string, lex_class_name, relevance):
+        self.string = string
+        self.lexical_class = lex_class
+        self.relevance = relevance
