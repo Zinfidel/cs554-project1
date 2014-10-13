@@ -16,7 +16,7 @@ end_keyword = Keyword("end;").suppress()
 # Alphabet definition
 alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end;").suppress() | Keyword("end").suppress()
-Symbol = Literal("\'").suppress() + Combine(Optional(Literal("\\")) + Word(printables + " ", exact=1))
+Symbol = Combine(Literal("\'").suppress() + Optional(Literal("\\")) + Word(printables + " ", exact=1))
 SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 # example: ['a, 'b, 'c]
@@ -118,4 +118,8 @@ def ConstructLexicalDescription(file):
        :rtype: LexicalDesc
     """
     lexDesc = LexicalDescription.parseFile(file)
+    print lexDesc
     return LexicalDesc(lexDesc.Name, lexDesc.Alphabet, lexDesc.Classes)
+
+if __name__ == "__main__":
+    ConstructLexicalDescription("testdata/lexdesc2.txt")
