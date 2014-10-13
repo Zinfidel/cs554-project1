@@ -12,17 +12,24 @@ from scanner import LexicalDesc
 #######################
 arrow = Keyword("-->").suppress()
 end_keyword = Keyword("end;").suppress()
+def decodeEscapes(tokens):
+    token = tokens[0]
+    tokens[0] = token.decode('string_escape') if "\\" in token else token
+    return tokens
+
 
 # Alphabet definition
 alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end;").suppress() | Keyword("end").suppress()
 Symbol = Combine(Literal("\'").suppress() + Optional(Literal("\\")) + Word(printables + " ", exact=1))
+Symbol.setParseAction(decodeEscapes)
 SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 # example: ['a, 'b, 'c]
 
 # Regex definition:
 RegexSymbol = Combine(Literal("\'") + Optional(Literal("\\")) + Word(printables + " ", exact=1))
+RegexSymbol.setParseAction(decodeEscapes)
 Regex = ZeroOrMore(Literal('*') ^
                    Literal('|') ^
                    Literal('+') ^
@@ -123,4 +130,7 @@ def ConstructLexicalDescription(file):
     return LexicalDesc(lexDesc.Name, lexDesc.Alphabet, lexDesc.Classes)
 
 if __name__ == "__main__":
-    ConstructLexicalDescription("testdata/lexdesc2.txt")
+    # ConstructLexicalDescription("testdata/lexdesc2.txt")
+    test = ConstructAutomata("testdata/dfa4.txt")
+    for symbol in test.alphabet:
+        print symbol

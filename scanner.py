@@ -1,5 +1,5 @@
 from regex import BuildExpression
-import description_reader
+# import description_reader
 
 class LexicalDesc:
     """Encapsulates a complete lexical description."""
@@ -17,10 +17,10 @@ class LexicalDesc:
     def scan(self, string_to_scan, tokens=[]):
         '''
         Scans a string and produces a list of Tokens parsed from
-        the string. 
+        the string.
 
-        :param string_to_scan the string that will be turned into a list 
-               of Token objects. 
+        :param string_to_scan the string that will be turned into a list
+               of Token objects.
         :return a list of Token object recognized by the string. If the
                 string cannot be fully recognized (ie, there is part of the
                 string left after scanning completely) an empty list will be
@@ -30,7 +30,7 @@ class LexicalDesc:
             return tokens
 
         '''
-           Represents the leftmost parse of the parse tree. 
+           Represents the leftmost parse of the parse tree.
         '''
         for c in self.classes:
             matched, leftover = c.regex.consume(string_to_scan)
@@ -81,16 +81,16 @@ class Token:
     def __str__(self):
         return "Class: " + str(self.lexical_class) + "\n\tString: " + str(self.string)
 
-if __name__ == "__main__":
-    desc = description_reader.LexicalDescription.parseFile("./testdata/tiny_basic_lex_desc.txt")
-    tiny_basic = LexicalDesc(desc.Name, desc.Alphabet, desc.Classes)
-#    print tiny_basic.classes[0].regex.consume("LET")
-    f = open('./testdata/tinyBasicProgram.txt')
-    basic_program = f.read()
-
-    print basic_program
-
-    #TODO -- TEB: fails when scanning due to newline characters not being
-    #             recongized. 
-    for c in tiny_basic.scan(basic_program):
-        print c
+# if __name__ == "__main__":
+#     desc = description_reader.LexicalDescription.parseFile("./testdata/tiny_basic_lex_desc.txt")
+#     tiny_basic = LexicalDesc(desc.Name, desc.Alphabet, desc.Classes)
+# #    print tiny_basic.classes[0].regex.consume("LET")
+#     f = open('./testdata/tinyBasicProgram.txt')
+#     basic_program = f.read()
+#
+#     print basic_program
+#
+#     #TODO -- TEB: fails when scanning due to newline characters not being
+#     #             recongized.
+#     for c in tiny_basic.scan(basic_program):
+#         print c
