@@ -1,0 +1,20 @@
+language tinybasic
+alphabet
+'( ') ' '\n '+ '- '* '/ '> '< '= '1 '2 '3 '4 '5 '6 '7 '8 '9 '0 'A 'B 'C 'D 'E 'F 'G 'H 'I 'J 'K 'L 'M 'N 'O 'P 'Q 'R 'S 'T 'U 'V 'W 'X 'Y 'Z
+end;
+
+class keyword is | + 'T + 'H + 'E 'N | + 'L + 'I + 'S 'T | + 'C + 'L + 'E + 'A 'R | + 'R + 'E + 'T + 'U + 'R 'N | + 'G + 'O + 'S + 'U 'B | + 'I + 'N + 'P + 'U 'T | + 'I 'F | + 'E + 'N 'D  | + 'L + 'E 'T  | + 'G + 'O + 'T 'O + 'P + 'R + 'I + 'N 'T relevant end;
+
+class variable is | 'A | 'B | 'C | 'D | 'E | 'F | 'G | 'H | 'I | 'J | 'K | 'L | 'M | 'N | 'O | 'P | 'Q | 'R | 'S | 'T | 'U | 'V | 'W | 'X | 'Y 'Z relevant end;
+
+class number is + | '1 | '2 | '3 | '4 | '5 | '6 | '7 | '8 '9 * | '1 | '2 | '3 | '4 | '5 | '6 | '7 | '8 | '9 '0 relevant end;
+
+class relop is | '< | '> | '= | + '> '= | + '< '= | + '< '> + '> '< relevant end;
+
+class op is | '+ | '- | '* '/ relevant end;
+
+class parens is | '( ') relevant end;
+
+class whitespace is * | ' '\n discard end;
+
+end;

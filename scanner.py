@@ -1,5 +1,4 @@
-from description_reader import BuildExpression
-
+from description_reader import *
 
 class LexicalDesc:
     """Encapsulates a complete lexical description."""
@@ -34,20 +33,21 @@ class LexicalDesc:
         '''
         for c in self.classes:
             matched, leftover = c.regex.consume(string_to_scan)
-
+            
             #if we do get a match using the regex
             if matched != '':
                 new_tokens = tokens + [Token(matched, c.name, c.relevance)]
-                recursive_scan = self.scan(leftover, new_tokens)
-                if recursive_scan != []:
-                    return recursive_scan
+                try:
+                    return self.scan(leftover, new_tokens)
+                except Exception as e:
+                    continue
 
         ''' If we get here, that means there was no logical parse
             using the regexes we were given. We should return an error
             at this point. An empty list of tokens means this was not
             successful in 
         '''
-        return []
+        raise Exception(string_to_scan)
 
 
 class LexicalClass:
@@ -60,7 +60,7 @@ class LexicalClass:
         :param relevance: The semantic relevance of this class.
         """
         self.name = name
-        self.regex = BuildExpression(class_tokens)
+        self.regex, ignored = BuildExpression(class_tokens)
         self.relevance = relevance
 
     def __str__(self):
@@ -74,5 +74,20 @@ class Token:
 
     def __init__(self, string, lex_class_name, relevance):
         self.string = string
-        self.lexical_class = lex_class
+        self.lexical_class = lex_class_name
         self.relevance = relevance
+
+    def __str__(self):
+        return "Class: " + str(self.lexical_class) + "\n\tString: " + str(self.string)
+
+if __name__ == "__main__":
+    desc = LexicalDescription.parseFile("./testdata/tiny_basic_lex_desc.txt")
+    tiny_basic = LexicalDesc(desc.Name, desc.Alphabet, desc.Classes)
+#    print tiny_basic.classes[0].regex.consume("LET")
+    f = open('./testdata/tinyBasicProgram.txt')
+    basic_program = f.read()
+
+    print basic_program
+
+    for c in tiny_basic.scan("60 IF A <= 100 THEN GOTO 50"):
+        print c

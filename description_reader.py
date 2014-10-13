@@ -133,8 +133,8 @@ def BuildExpression(tokens):
 
         # Make sure we have tokens to consume, otherwise an error
         if len(leftover) == 0:
-            raise Error('''No more tokens found after building the left hand side of
-                           a ConcatExpression''')
+            raise Exception('No more tokens found after building the left hand side\
+                            of a ConcatExpression')
         # Build the right hand side of the ConcatExpression
         rightSide, leftover = BuildExpression(leftover)
         return Concatenation(leftSide, rightSide), leftover
@@ -145,8 +145,8 @@ def BuildExpression(tokens):
 
         # Make sure we have tokens to consume, otherwise an error
         if len(leftover) == 0:
-            raise Error('''No more tokens found after building the left hand side of
-                           a ConcatExpression''')
+            raise Exception('No more tokens found after building the left hand\
+                             side of a ConcatExpression')
 
         rightSide, leftover = BuildExpression(leftover)
         return Alternative(leftSide, rightSide), leftover
@@ -160,7 +160,7 @@ def BuildExpression(tokens):
     # E -> sigma (where sigma is some symbol that doesn't match the previous
     # values
     else:
-        return Sigma(t), tokens[1:]
+        return Sigma(t[1:]), tokens[1:]
 
 
 if __name__ == "__main__":

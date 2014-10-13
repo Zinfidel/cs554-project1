@@ -10,6 +10,8 @@ class Production:
         pass
 
     def consume(self, string):
+        pass
+
         i = 0
         while self.matches(string[0:(i+1)]) and i <= len(string):
             i += 1
@@ -48,6 +50,18 @@ class Repetition(Production):
             return True
 
         return self.expr.matches(string[0:1]) and self.matches(string[1:])
+        
+    def consume(self, string):
+        consumed = 'default'
+        total_consumed = ''
+        leftover = string
+
+        while consumed != '' and leftover != '':
+            consumed, leftover = self.expr.consume(leftover)
+            total_consumed += consumed
+
+        return total_consumed, leftover
+        
 
 class Alternative(Production):
     def __init__(self, left, right):
@@ -60,6 +74,19 @@ class Alternative(Production):
     def matches(self, string):
         return self.left.matches(string) or \
                self.right.matches(string)
+
+    def consume(self, string):
+        left_consume, leftover = self.left.consume(string)
+        # he he he. rightover.... I crack myself up.
+        right_consume, rightover = self.right.consume(string)
+
+        #uuuuhhhh... might be an issue here since we cant return
+        #both. What if they both match? How do we choose?
+        #currently going with the larger one
+        if len(left_consume) > len(right_consume):
+            return left_consume, leftover
+        else:
+            return right_consume, rightover
 
 class Concatenation(Production):
     def __init__(self, left, right):
@@ -89,6 +116,9 @@ class NilExpression(Production):
 
     def matches(self, string):
         return string == ''
+
+    def consume(self, string):
+        return '', string
 
 
 if __name__ == "__main__":
@@ -122,4 +152,5 @@ if __name__ == "__main__":
     print c.matches('baa')
     print c.consume('baba')
     print c.consume('bsa')
+    print c.consume('baaaaaaa')
 
