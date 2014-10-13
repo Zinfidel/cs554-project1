@@ -22,10 +22,11 @@ Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 # example: ['a, 'b, 'c]
 
 # Regex definition:
+RegexSymbol = Combine(Literal("\'") + Optional(Literal("\\")) + Word(printables + " ", exact=1))
 Regex = ZeroOrMore(Literal('*') ^
                    Literal('|') ^
                    Literal('+') ^
-                   Symbol)
+                   RegexSymbol)
 # example: ['b, +, *, |, 'a, 'o, 'r]
 
 
