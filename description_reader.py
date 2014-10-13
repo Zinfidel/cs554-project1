@@ -92,16 +92,20 @@ LexicalDescription = language_keyword \
 
 def ConstructAutomata(file):
     """Parses the supplied automata file, then constructs and returns an Automata object.
-       The supplied file can either be a file object, or a URI.
+
+       :param str | file file: File object or URI.
+       :rtype: Automata
     """
     fa = FiniteAutomata.parseFile(file)
-    return Automata(fa.States, fa.Start, fa.Accept, fa.Transitions, fa.Alphabet)
+    # Note on fa.Start: parseResult objects always return values in lists, so this must be dereferenced.
+    return Automata(fa.States, fa.Start[0], fa.Accept, fa.Transitions, fa.Alphabet)
 
 
 def ConstructRegex(file):
     """Parses the supplied regex, and constructs the appropriate Regex data structure found in ./regex.py
        
-       The supplied input an be a file object or a URI.
+       :param str | file file: File object or URI.
+       :rtype: Regex
     """
     regex_tokens = Regex.parseString(file)
     return BuildExpression(regex_tokens)
@@ -109,12 +113,9 @@ def ConstructRegex(file):
 
 def ConstructLexicalDescription(file):
     """Parses the supplied lexical description file, then constructs and returns a lexical description object.
-       The supplied file can either be a file object, or a URI.
+
+       :param str | file file: File object or URI.
+       :rtype: LexicalDesc
     """
     lexDesc = LexicalDescription.parseFile(file)
     return LexicalDesc(lexDesc.Name, lexDesc.Alphabet, lexDesc.Classes)
-
-
-
-if __name__ == "__main__":
-    pass
