@@ -11,16 +11,6 @@ class Production:
     def consume(self, string):
         pass
 
-        i = 0
-        while self.matches(string[0:(i+1)]) and i <= len(string):
-            i += 1
-
-        if i == 0:
-            return '', string
-        else:
-            return string[0:i], string[i:]
-
-
 class Sigma(Production):
     def __init__(self, sigma):
         self.sigma = sigma
