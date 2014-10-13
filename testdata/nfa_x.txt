@@ -1,0 +1,24 @@
+dfa 
+states 
+x
+y
+z
+end;
+initial
+x
+accept 
+y
+z
+end; 
+transitions 
+x 'a --> z
+x 'b --> x
+y 'a --> y
+y 'b --> x
+z 'a --> y
+z 'b --> x
+end;
+
+alphabet
+'a 'b
+end

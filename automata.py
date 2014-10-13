@@ -20,6 +20,9 @@ class Automata:
         self.alphabet = set(alphabet)
         """A set of symbols that comprise the alphabet for this automaton."""
 
+        self.states = states
+        """The states in raw, lexed form. This is necessary for some algorithms (Brzozowski)"""
+
         self.transitions = transitions
         """The transitions in raw, lexed form. This is necessary for some algorithms (Hopcroft's)"""
 
