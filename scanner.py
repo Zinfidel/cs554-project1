@@ -1,5 +1,5 @@
 from regex import BuildExpression
-# import description_reader
+import description_reader
 
 class LexicalDesc:
     """Encapsulates a complete lexical description."""
@@ -34,19 +34,22 @@ class LexicalDesc:
         '''
         for c in self.classes:
             matched, leftover = c.regex.consume(string_to_scan)
-            
+
             #if we do get a match using the regex
             if matched != '':
-                new_tokens = tokens + [Token(matched, c.name, c.relevance)]
+                if c.relevance != 'discard':
+                    new_tokens = tokens + [Token(matched, c.name, c.relevance)]
+                else:
+                    new_tokens = tokens
                 try:
                     return self.scan(leftover, new_tokens)
                 except Exception as e:
                     continue
 
-        ''' If we get here, that means there was no logical parse
+        ''' 
+            If we get here, that means there was no logical parse
             using the regexes we were given. We should return an error
-            at this point. An empty list of tokens means this was not
-            successful in 
+            at this point. 
         '''
         raise Exception(string_to_scan)
 
@@ -81,16 +84,27 @@ class Token:
     def __str__(self):
         return "Class: " + str(self.lexical_class) + "\n\tString: " + str(self.string)
 
-# if __name__ == "__main__":
-#     desc = description_reader.LexicalDescription.parseFile("./testdata/tiny_basic_lex_desc.txt")
-#     tiny_basic = LexicalDesc(desc.Name, desc.Alphabet, desc.Classes)
-# #    print tiny_basic.classes[0].regex.consume("LET")
-#     f = open('./testdata/tinyBasicProgram.txt')
-#     basic_program = f.read()
-#
-#     print basic_program
-#
-#     #TODO -- TEB: fails when scanning due to newline characters not being
-#     #             recongized.
-#     for c in tiny_basic.scan(basic_program):
-#         print c
+if __name__ == "__main__":
+     desc = description_reader.LexicalDescription.parseFile("./testdata/tiny_basic_lex_desc.txt")
+     tiny_basic = LexicalDesc(desc.Name, desc.Alphabet, desc.Classes)
+     f = open('./testdata/tinyBasicProgram.txt')
+     basic_program = f.read()
+
+     print basic_program
+     '''
+     num = None
+     for c in tiny_basic.classes:
+         if c.name == 'number':
+             num = c.regex
+
+     print num
+     print num.matches('2')
+     print num.consume('2')
+     r, over =  num.right.consume('2')
+     l, over = num.left.consume('2')
+     print len(l), len(r)
+'''
+     #TODO -- TEB: fails when scanning due to newline characters not being
+     #             recongized.
+     for c in tiny_basic.scan(basic_program):
+         print c

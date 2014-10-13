@@ -45,7 +45,7 @@ class Repetition(Production):
         total_consumed = ''
         leftover = string
 
-        while consumed != '' and leftover != '':
+        while consumed != '':
             consumed, leftover = self.expr.consume(leftover)
             total_consumed += consumed
 
@@ -72,10 +72,11 @@ class Alternative(Production):
         #uuuuhhhh... might be an issue here since we cant return
         #both. What if they both match? How do we choose?
         #currently going with the larger one
-        if len(left_consume) > len(right_consume):
+        if len(left_consume) >= len(right_consume):
             return left_consume, leftover
         else:
             return right_consume, rightover
+            
 
 class Concatenation(Production):
     def __init__(self, left, right):
@@ -92,7 +93,7 @@ class Concatenation(Production):
         left_match, leftover = self.left.consume(string)
         right_match, leftover = self.right.consume(leftover)
 
-        if left_match == '' or right_match == '':
+        if left_match == '':
             return '', string
  
         left_match += right_match
@@ -145,7 +146,7 @@ def BuildExpression(tokens):
 
         rightSide, leftover = BuildExpression(leftover)
         return Alternative(leftSide, rightSide), leftover
-    # E -> * E
+     # E -> * E
     elif t == '*':
         e, leftover = BuildExpression(tokens[1:])
         return Repetition(e), leftover
@@ -155,7 +156,8 @@ def BuildExpression(tokens):
     # E -> sigma (where sigma is some symbol that doesn't match the previous
     # values
     else:
-        return Sigma(t), tokens[1:]
+        #these value are quoted so we must remove the quote
+        return Sigma(t[1:]), tokens[1:]
 
 
 if __name__ == "__main__":
