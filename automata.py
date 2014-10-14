@@ -1,30 +1,36 @@
 class Automata:
     """Represents a finite automaton."""
 
-    def __init__(self, states=None, start="", accepts=None, transitions=None, alphabet=None):
-        # Take care of default arguments - avoids issue of defaults being mutable/evaluated once.
+    def __init__(self, states=None, start="", accepts=None, transitions=None,\
+                 alphabet=None):
+        # Take care of default arguments - avoids issue of defaults being \
+        # mutable/evaluated once.
         if states is None: states = []
         if accepts is None: accepts = []
         if transitions is None: transitions = []
         if alphabet is None: alphabet = []
 
         self.start = start
-        """Starting state for this automata. This is the name of the node as a string."""
+        """Starting state for this automata. This is the name of the node
+           as a string."""
 
         self.accepts = accepts
         """List of names of accepting states for the automata. These are strings."""
 
         self.nodes = {name: AutomataNode(name) for name in states}
-        """Dictionary of nodes in the automata. The key is the state name, the value is the node object."""
+        """Dictionary of nodes in the automata. The key is the state name, 
+           the value is the node object."""
 
         self.alphabet = set(alphabet)
         """A set of symbols that comprise the alphabet for this automaton."""
 
         self.states = states
-        """The states in raw, lexed form. This is necessary for some algorithms (Brzozowski)"""
+        """The states in raw, lexed form. This is necessary for some algorithms
+           (Brzozowski)"""
 
         self.transitions = transitions
-        """The transitions in raw, lexed form. This is necessary for some algorithms (Hopcroft's)"""
+        """The transitions in raw, lexed form. This is necessary for some
+           algorithms (Hopcroft's)"""
 
         # Set the accept state flag for all nodes in the accept list.
         for accState in accepts:
@@ -80,7 +86,8 @@ class AutomataNode:
         ret += "Accept: " + str(self.accept) + '\n'
         ret += "Transitions:\n"
         for key in self.transitions.keys():
-            ret += "  " + key + " -> " + str([state for state in self.transitions[key]]) + '\n'
+            ret += "  " + key + " -> " + \
+                   str([state for state in self.transitions[key]]) + '\n'
 
         return ret
 
@@ -93,7 +100,8 @@ class AutomataNode:
         return self.name == other.name
 
     def getTransitionState(self, input_string):
-        """Returns the state traversed to on a given input symbol, or none if no such transition exists."""
+        """Returns the state traversed to on a given input symbol, or none if 
+           no such transition exists."""
         if input_string in self.transitions:
             return self.transitions[input_string]
         else:
