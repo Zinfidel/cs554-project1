@@ -126,11 +126,7 @@ def ConstructLexicalDescription(file):
        :rtype: LexicalDesc
     """
     lexDesc = LexicalDescription.parseFile(file)
-    print lexDesc
     return LexicalDesc(lexDesc.Name, lexDesc.Alphabet, lexDesc.Classes)
 
 if __name__ == "__main__":
-    # ConstructLexicalDescription("testdata/lexdesc2.txt")
-    test = ConstructAutomata("testdata/dfa4.txt")
-    for symbol in test.alphabet:
-        print symbol
+    test = ConstructLexicalDescription("testdata/lexdesc2.txt")
