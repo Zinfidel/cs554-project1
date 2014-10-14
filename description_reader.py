@@ -105,18 +105,22 @@ def ConstructAutomata(file):
        :rtype: Automata
     """
     fa = FiniteAutomata.parseFile(file)
-    # Note on fa.Start: parseResult objects always return values in lists, so this must be dereferenced.
+    # Alphabet check: if there are symbols in the transitions not in the
+    # alphabet, throw an exception.
+    for trans in fa.Transitions:
+        for symbol in trans[1]:
+            if symbol not in fa.Alphabet.asList():
+                trans_str = trans[0] + ' \''\
+                            + " \'".join(trans[1])\
+                            + " --> " + trans[2]
+                raise Exception("Alphabet Error! The transition:\n\n"\
+                                + "    " + trans_str + "\n\n"\
+                                + " contains the symbol \'" + symbol + "\' "\
+                                + "which is not in the described alphabet!")
+
+    # Note on fa.Start: parseResult objects always return values in lists,
+    # so this must be dereferenced.
     return Automata(fa.States, fa.Start[0], fa.Accept, fa.Transitions, fa.Alphabet)
-
-
-def ConstructRegex(file):
-    """Parses the supplied regex, and constructs the appropriate Regex data structure found in ./regex.py
-       
-       :param str | file file: File object or URI.
-       :rtype: Regex
-    """
-    regex_tokens = Regex.parseString(file)
-    return BuildExpression(regex_tokens)
 
 
 def ConstructLexicalDescription(file):
@@ -126,7 +130,21 @@ def ConstructLexicalDescription(file):
        :rtype: LexicalDesc
     """
     lexDesc = LexicalDescription.parseFile(file)
+
+    # Alphabet check: if there are symbols in the regexes defined in this
+    # lexical description that aren't in the alphabet, raise an exception.
+    for clazz in lexDesc.Classes:
+        for symbol in clazz[1]:
+            if (len(symbol) > 1) and (symbol[1:] not in lexDesc.Alphabet.asList()):
+                regex_str = ' '.join(clazz[1])
+                raise Exception("Alphabet Error! The regex:\n\n" \
+                                + "    " + regex_str + "\n\n" \
+                                + " contains the symbol \'" + symbol[1:] + "\' " \
+                                + "which is not in the described alphabet!")
+
+
     return LexicalDesc(lexDesc.Name, lexDesc.Alphabet, lexDesc.Classes)
 
+
 if __name__ == "__main__":
-    test = ConstructLexicalDescription("testdata/lexdesc2.txt")
+    ConstructAutomata("testdata/dfa2.txt")
