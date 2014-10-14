@@ -3,10 +3,10 @@
 default: clean
 
 clean:
-	rm *~ paper.log paper.aux paper.pdf
+	rm *~ project1.log project1.aux project1.pdf
 
 paper: 
-	pdflatex -shell-escape paper.tex
+	pdflatex -shell-escape project1.tex
 
 view: paper
-	okular paper.pdf &
+	okular project1.pdf
