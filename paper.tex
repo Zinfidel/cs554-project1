@@ -31,7 +31,9 @@ unrestricted. An alphabet is defined as a set of unique symbols and are formally
  alphabet containing the symbols $a,b,c$ would be:
 
 \begin{verbatim}
-alphabet 'a 'b 'c end
+alphabet
+'a 'b 'c
+end
 \end{verbatim}
 
 \paragraph{} The former example can be abstracted into a formal definition:
@@ -258,10 +260,10 @@ class Concatenation(Production):
 \end{minted}
 
 \subsubsection{Nil Expression}
-\paragraph{} For completeness, a regular expression has one other semantically
-correct production, the Nil Expression. This expression recognizes regular 
-expressions of the type \verb|E -> _| where the underscore represents the 
-empty string. 
+\paragraph{} For completeness, a regular expression has one other 
+semantically correct production, the Nil Expression. This expression
+recognizes regular expressions of the type \verb|E -> _| where the
+underscore represents the empty string.
 
 \begin{minted}{python}
 class NilExpression(Production):
@@ -281,35 +283,103 @@ class NilExpression(Production):
 
 \subsection{Automata}
 \paragraph{} For our project, since the main difference between
-a NFA and a DFA is the symbol list for a transition instead of just
-a single symbol, we chose to keep the data structure the same and
-only interpret them differently when requried to by a specific 
-algorithm. 
+a NFA and a DFA is the symbol list for a transition instead of just a
+single symbol, we chose to keep the data structure the same and only
+interpret them differently when requried to by a specific algorithm.
 
 \paragraph{} The basic structure for the Automata class is a directed
-graph object. A dictionary is used to identify edges from one node to the 
-next where edges are indexed on the transition character. This is where the
-NFA and DFA must be interpretted differently. For the DFA, we expect the 
-number of states returned to be either 0 or 1. However for the NFA, any number
-of states may be returned upon inspected the transition edges based on a certain
-character $\sigma$.
+graph object. A dictionary is used to identify edges from one node to
+the next where edges are indexed on the transition character. This is
+where the NFA and DFA must be interpretted differently. For the DFA,
+we expect the number of states returned to be either 0 or 1. However
+for the NFA, any number of states may be returned upon inspected the
+transition edges based on a certain character $\sigma$.
 
 \paragraph{} The full implementation for an automata can be found in section~\ref{code:automata}.
 
 \section{Algorithms}
-\subsection{Thompson's Construction}
-\paragraph{}Thompson's construction works on converting our regular expressions into NFAs. The algorithm was separated from the rest of the code and resides in the file designated by section~\ref{code:thompsons}
+\paragraph{}All algorithms were written in stand alone files that
+operated on parameters passed into their function calls. Please see
+section~\ref{code} for the individual algorithm implementations.
 
-\subsection{Subset Construction}
-\paragraph{}The subset construction algorithm convers any given NFA into an equivalent DFA. The code for this can be found in the separate file designated by section~\ref{code:subset}
+\section{Complete Lexical Descriptions}
+\paragraph{}For any complete lexical description we can construct a 
+parser that will return a list of sequential strings recognized by the
+language. For our implemenation, we shied away from using the massive
+DFA for token recognition since the regular expression encoded enough
+information for token recognition. 
 
-\subsection{DFA to Regex}
-\paragraph{}As the name implies, this function converts a given DFA back to a regular Expression and can be found in section~\ref{code:dfaToRe}
+\begin{minted}{python}
+class LexicalDesc:
+  #... ommitted for clarity sake
 
-\subsection{Hopcroft's Algorithm}
-\paragraph{}Hopcroft's algorithm is a minimalization algorithm which minimizes a given DFA into a unique minimalistic DFA. The code for this can be found in section~\ref{code:hopcrofts}
+        def scan(self, string_to_scan, tokens=[]):
+
+        # ... comments ommitted ...
+
+        if string_to_scan == '':
+            return tokens
+
+        '''
+           Represents the leftmost parse of the parse tree.
+        '''
+        for c in self.classes:
+            matched, leftover = c.regex.consume(string_to_scan)
+
+            #if we do get a match using the regex
+            if matched != '':
+                if c.relevance != 'discard':
+                    new_tokens = tokens + [Token(matched, c.name, c.relevance)]
+                else:
+                    new_tokens = tokens
+
+                try:
+                    return self.scan(leftover, new_tokens)
+                except Exception as e:
+                    continue
+
+        ''' 
+            If we get here, that means there was no logical parse
+            using the regexes we were given. We should return an error
+            at this point. 
+        '''
+        raise Exception(string_to_scan)
+\end{minted}
+
+\paragraph{} Since it is a recursive definition, we constantly scan a
+smaller and smaller parse from the string until we either run out of
+string to parse (success) or run out of options when trying to consume
+using the regexes (failure). If at the top level, we raise an
+exception we know that there were no logical parses for the string
+using the regex of the lexical description and therefore the string is
+not a part of the language.
+
+
+\paragraph{} However, it should be noted that a lexical description
+of the file can be converted into a union of regular expressions. The
+regular expressions can then be converted into a (very) large NFA
+which can then be converted into an even larger DFA. That DFA can also
+be used to consume input from the front on an input stream and every
+time it reaches an accept state (that contains some meta information),
+we can output the total consumed characters up to that point as a
+single token.  It should also be noted that you can convert a DFA to a
+regular expression, so our method is equivalent to parsing using a
+DFA.
 
 \section{Team Composition}
+\paragraph{}Our team worked rather well together. Taylor was 
+responsible for constructing all class structures, putting it all
+together in the scanner generator, as well as writing the
+report. Justin and Zach wrote many of the algorithms used and Zach put
+in a considerable amount of time using Pyparsing to read our input
+files into the correct format.
+
+\paragraph{}It did take a while for our group to fully understand the
+project specification but once we understood where we needed to go,
+the rest of the project was fairly straightforward. We actually found
+out we were missing a large chunk of the final portion (scanner
+generator) a few days before turn-in but were able to group together
+and write the code we needed to successfully complete the assignment.
 
 \section{Appendix: Libraries Used}
 \paragraph{} We tried to stay away from using any libraries that would make
@@ -319,6 +389,7 @@ particular task we opted to use a Python text parser called
 and install via the python egg from their website.
 
 \section{Source Files}
+\label{code}
 \subsection{regex.py}
 \label{code:regex}
 \inputminted{python}{./regex.py}
@@ -354,5 +425,8 @@ and install via the python egg from their website.
 \subsection{description\_reader.py}
 \label{code:descriptionReader}
 \inputminted{python}{./description_reader.py}
+
+\section*{Link to Code}
+Code can be found at \href{https://github.com/zinfidel/cs554-project1}{Zach's github}.
 
 \end {document}
