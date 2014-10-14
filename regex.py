@@ -74,8 +74,9 @@ class Alternative(Production):
         return '| ' + str(self.left) + ' ' +  str(self.right)
 
     def __eq__(self, other):
-        return isinstance(other, Alternative) and (self.left == other.left) and (self.right == other.right)
-
+        return isinstance(other, Alternative) and (self.left == other.left \
+                                              and (self.right == other.right)
+                                                   
     def matches(self, string):
         return self.left.matches(string) or \
                self.right.matches(string)
@@ -103,7 +104,8 @@ class Concatenation(Production):
         return '+ ' + str(self.left) + ' ' + str(self.right)
 
     def __eq__(self, other):
-        return isinstance(other, Concatenation) and (self.left == other.left) and (self.right == other.right)
+        return isinstance(other, Concatenation) and (self.left == other.left)\
+                                                and (self.right == other.right)
 
     def matches(self, string):
         return self.left.matches(string[0:1]) and self.right.matches(string[1:])
@@ -275,7 +277,8 @@ def __simplify(re):
 
 
 def simplify(regex):
-    """ This function repeatedly simplifes a regex and checks that it is minimal via idempotence.
+    """ This function repeatedly simplifes a regex and checks that it is
+        minimal via idempotence.
 
         :param Production regex: The regex to simplify
         :rtype: Production

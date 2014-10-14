@@ -7,7 +7,8 @@ class LexicalDesc:
         """
         :param name: The name of this description as a string.
         :param alphabet A list of backquoted symbols as produced by description_reader.py.
-        :param classes: A list of parsed classes. Each class is a list of tokens as produced by description_reader.py.
+        :param classes: A list of parsed classes. Each class is a list of tokens
+                        as produced by description_reader.py.
         """
         self.name = name
         self.alphabet = alphabet
@@ -67,7 +68,8 @@ class LexicalClass:
         self.relevance = relevance
 
     def __str__(self):
-        return "Name: " + self.name + ", Regex: " + str(self.regex) + ", Relevance: " + self.relevance
+        return "Name: " + self.name + ", Regex: " + \
+               str(self.regex) + ", Relevance: " + self.relevance
 
 
 class Token:
@@ -81,4 +83,5 @@ class Token:
         self.relevance = relevance
 
     def __str__(self):
-        return "Class: " + str(self.lexical_class) + "\n\tString: " + str(self.string)
+        return "Class: " + str(self.lexical_class) + "\n\tString: "\
+               + str(self.string)

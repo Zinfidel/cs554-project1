@@ -21,14 +21,16 @@ def decodeEscapes(tokens):
 # Alphabet definition
 alphabet_keyword = Keyword("alphabet").suppress()
 alphabet_end_keyword = Keyword("end;").suppress() | Keyword("end").suppress()
-Symbol = Combine(Literal("\'").suppress() + Optional(Literal("\\")) + Word(printables + " ", exact=1))
+Symbol = Combine(Literal("\'").suppress() + Optional(Literal("\\")) + \
+                 Word(printables + " ", exact=1))
 Symbol.setParseAction(decodeEscapes)
 SymbolList = OneOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 # example: ['a, 'b, 'c]
 
 # Regex definition:
-RegexSymbol = Combine(Literal("\'") + Optional(Literal("\\")) + Word(printables + " ", exact=1))
+RegexSymbol = Combine(Literal("\'") + Optional(Literal("\\")) + \
+                      Word(printables + " ", exact=1))
 RegexSymbol.setParseAction(decodeEscapes)
 Regex = ZeroOrMore(Literal('*') ^
                    Literal('|') ^
@@ -84,7 +86,8 @@ ClassDescription = Group(Regex)
 
 class_keyword = Keyword("class").suppress()
 is_keyword = Keyword("is").suppress()
-Class = class_keyword + identifier + is_keyword + ClassDescription + SemanticRelevance + end_keyword
+Class = class_keyword + identifier + is_keyword + ClassDescription + \
+        SemanticRelevance + end_keyword
 # example: ['base', ['+', "'b", '+', '*', '|', "'a", "'o", "'r"], 'relevant'],
 
 ClassList = ZeroOrMore(Group(Class))
@@ -99,7 +102,8 @@ LexicalDescription = language_keyword \
 
 
 def ConstructAutomata(file):
-    """Parses the supplied automata file, then constructs and returns an Automata object.
+    """Parses the supplied automata file, then constructs and returns an 
+       Automata object.
 
        :param str | file file: File object or URI.
        :rtype: Automata
@@ -120,11 +124,13 @@ def ConstructAutomata(file):
 
     # Note on fa.Start: parseResult objects always return values in lists,
     # so this must be dereferenced.
-    return Automata(fa.States, fa.Start[0], fa.Accept, fa.Transitions, fa.Alphabet)
+    return Automata(fa.States, fa.Start[0], fa.Accept, fa.Transitions,\
+                    fa.Alphabet)
 
 
 def ConstructLexicalDescription(file):
-    """Parses the supplied lexical description file, then constructs and returns a lexical description object.
+    """Parses the supplied lexical description file, then constructs and returns
+       a lexical description object.
 
        :param str | file file: File object or URI.
        :rtype: LexicalDesc

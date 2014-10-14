@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 """ Converts a DFA to a regular expression using Brzozowski's algebraic method.
-    http://cs.stackexchange.com/questions/2016/how-to-convert-finite-automata-to-regular-expressions/2017#2017
+    http://cs.stackexchange.com/questions/2016/how-to-convert-finite-automata-to
+         -regular-expressions/2017#2017
 """
 from regex import *
 

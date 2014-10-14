@@ -3,15 +3,18 @@
 from automata import *
 from regex import *
 
-'''
-General notes for Thompson's construction:
+'''General notes for Thompson's construction:
 
-There is always just one start and accept state for any nfa. That means that whenever nfas are combined
-that start/accept states are cleared and set to new, single states appropriate to the kind of combination.
+There is always just one start and accept state for any nfa. That
+means that whe never nfas are combined that start/accept states are
+cleared and set to new, single states appropriate to the kind of
+combination.
 
-When combining nfas, instead of creating an all new automaton, the "left" automata will just inherit all
-of the "right" automata's states and the right automata will be discarded. The left automata then acts as
-the new combined nfa.
+When combining nfas, instead of creating an all new automaton, the
+"left" automata will just inherit all of the "right" automata's states
+and the right automata will be discarded. The left automata then acts
+as the new combined nfa.
+
 '''
 
 
@@ -58,7 +61,8 @@ def constructConcatenation(left, right):
     left.accepts = right.accepts
     left.alphabet |= right.alphabet
 
-    # Add an epsilon transition from the accept state of left to the start state of the right.
+    # Add an epsilon transition from the accept state of left to the
+    # start state of the right.
     for node in left.accepts:
         left.nodes[node].addTransition(right.start, EPSILON)
 
@@ -80,8 +84,9 @@ def constructAlternative(left, right):
     newStart, newAccept = AutomataNode(__nextName()), AutomataNode(__nextName())
     left.addNodes([newStart, newAccept])
 
-    # Epsilon transitions from the new start state to the start states of the combined automata,
-    # and epsilon transitions from the combined automata accept states to the new accept state.
+    # Epsilon transitions from the new start state to the start states
+    # of the combined automata, and epsilon transitions from the
+    # combined automata accept states to the new accept state.
     newStart.addTransition(left.start, EPSILON)
     newStart.addTransition(right.start, EPSILON)
     left.nodes[left.accepts[0]].addTransition(newAccept.name, EPSILON)
@@ -104,11 +109,13 @@ def constructRepetition(left):
     newStart, newAccept = AutomataNode(__nextName()), AutomataNode(__nextName())
     left.addNodes([newStart, newAccept])
 
-    # Epsilon transitions from the new start to the original start and to the new accept.
+    # Epsilon transitions from the new start to the original start and
+    # to the new accept.
     newStart.addTransition(left.start, EPSILON)
     newStart.addTransition(newAccept.name, EPSILON)
 
-    # Epsilon transition from the original accept to the new accept and original start.
+    # Epsilon transition from the original accept to the new accept
+    # and original start.
     left.nodes[left.accepts[0]].addTransition(newAccept.name, EPSILON)
     left.nodes[left.accepts[0]].addTransition(left.start, EPSILON)
 
@@ -121,8 +128,11 @@ def constructRepetition(left):
 
 def convertRegexToNFA(node):
     """Constructs an NFA from a supplied regular expression tree.
-       :param Production node: The current node of the regular expression tree being evaluated.
+
+       :param Production node: The current node of the regular expression
+                               tree being evaluated.
        :rtype: Automata
+
     """
 
     if isinstance(node, Sigma):

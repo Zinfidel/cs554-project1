@@ -6,9 +6,9 @@ def hopcroftMinimize(file):
     P = [set(dfa.accepts),set(dfa.nodes.keys()).difference(set(dfa.accepts))]
     W = []
     if len(set(dfa.accepts)) > 1 : W.append(set(dfa.accepts))
-    if len(set(dfa.nodes.keys()).difference(set(dfa.accepts))): W.append(set(dfa.nodes.keys()).difference(set(dfa.accepts)))
-    #print "P is :",P
-    #print "W is :",W
+    if len(set(dfa.nodes.keys()).difference(set(dfa.accepts))): \
+           W.append(set(dfa.nodes.keys()).difference(set(dfa.accepts)))
+
     while len(W) != 0:
         A = W[0]
         W.remove(A)
@@ -16,8 +16,8 @@ def hopcroftMinimize(file):
             X = []
             for from_state in A:
                 to_state = dfa.nodes[from_state].getTransitionState(c)
-                if to_state is not None: to_state = to_state[0]  # Only one possible state for DFAs!
-                #print "from_state: ",from_state," using ",c," TO ",to_state
+                # Only one possible state for DFAs!
+                if to_state is not None: to_state = to_state[0]  
                 if len(X) == 0 : X.append(from_state)
                 else:
                     x_to_state = dfa.nodes[X[0]].getTransitionState(c)
@@ -31,7 +31,6 @@ def hopcroftMinimize(file):
                 P.append(X2)
                 if len(X1) > 1 : W.append(X1)
                 if len(X2) > 1 : W.append(X2)
-                    #print "------------------------------"
                 break
     new_states = []
     for s in dfa.nodes.keys():
@@ -43,9 +42,6 @@ def hopcroftMinimize(file):
     for s in dfa.transitions:
         new_transitions.append(s)
 
-    #print dfa
-    #print P
-
     for p in P:
         if len(p) > 1:
             this_state = None
@@ -53,11 +49,10 @@ def hopcroftMinimize(file):
             for current_state in p:
                 if this_state == None: this_state = current_state
                 elif not this_state == current_state:
-                    #print new_states
-                    #print current_state
+
                     if current_state in new_states:
                         new_states.remove(current_state)
-                    #print new_states
+
                     if current_state in new_accept:
                         new_accept.remove(current_state)
                         new_accept.append(this_state)

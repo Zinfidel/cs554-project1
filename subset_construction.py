@@ -16,18 +16,22 @@ def epsilonClosure(state, visitedStates, nfa):
         :param Automata nfa: The automaton that state belongs to.
         :rtype: set[AutomataNode]
     """
+    # Stores all states that can be reached via epsilon transition from this state.
+    reachableStates = set()     
+    # A state can always reach itself via epsilon transition.
+    reachableStates.add(state)  
+    # Visit this node so that further recursion doesn't re-add these transitions.
+    visitedStates.add(state)    
 
-    reachableStates = set()     # Stores all states that can be reached via epsilon transition from this state.
-    reachableStates.add(state)  # A state can always reach itself via epsilon transition.
-    visitedStates.add(state)    # Visit this node so that further recursion doesn't re-add these transitions.
-
-    # For each state reachable by epsilon transition that has not ben visited yet, calculate the epsilon closure
-    # of that state and add it to the reachableStates set.
+    # For each state reachable by epsilon transition that has not ben visited yet,
+    # calculate the epsilon closure of that state and add it to the 
+    # reachableStates set.
     if EPSILON in state.transitions:
         for nextState in state.transitions[EPSILON]:
             if nfa.nodes[nextState] not in visitedStates:
                 # Set data structure automatically discards duplicates.
-                reachableStates |= epsilonClosure(nfa.nodes[nextState], visitedStates, nfa)
+                reachableStates |= epsilonClosure(nfa.nodes[nextState], \
+                                                  visitedStates, nfa)
 
     return reachableStates
 
@@ -45,8 +49,10 @@ def move(states, symbol, nfa):
 
     for state in states:
         if symbol in state.transitions:
-            # List comprehension so that we can get state objects back instead of strings.
-            reachableStates |= set([nfa.nodes[name] for name in state.transitions[symbol]])
+            # List comprehension so that we can get state objects back instead
+            # of strings.
+            reachableStates |= set([nfa.nodes[name] for name in \
+                                    state.transitions[symbol]])
 
     return reachableStates
 
@@ -79,12 +85,14 @@ def convertNfaToDfa(nfa):
     # The DFA being constructed.
     dfa = Automata()
 
-    # Maps new state names to the collection of states they encompass. During the construction of the
-    # new DFA, composite states such as {s0,s1,s2} can be created, which is itself just one state, but
-    # needs to point to each of the three states in the NFA it was constructed from.
+    # Maps new state names to the collection of states they encompass. During the
+    # construction of the new DFA, composite states such as {s0,s1,s2} can be
+    # created, which is itself just one state, but needs to point to each of
+    # the three states in the NFA it was constructed from.
     nameToStates = dict()
 
-    # Sets to keep track of states that are waiting to be processed, and that have been processed.
+    # Sets to keep track of states that are waiting to be processed, and that
+    # have been processed.
     markedStates = set()
     unmarkedStates = set()
 
@@ -92,7 +100,8 @@ def convertNfaToDfa(nfa):
     initStateClosure = epsilonClosure(nfa.nodes[nfa.start], set(), nfa)
     dfaInitState = AutomataNode(stateSetName(initStateClosure))
 
-    # Add the initial composite state to the new DFA, the unmarked list, and the name map.
+    # Add the initial composite state to the new DFA, the unmarked list, and 
+    # the name map.
     dfa.addNodes([dfaInitState])
     dfa.start = dfaInitState.name
     unmarkedStates.add(dfaInitState)
@@ -103,11 +112,13 @@ def convertNfaToDfa(nfa):
         state = unmarkedStates.pop()
         markedStates.add(state)
 
-        # Generate set of states from epsilon closures over every state returned from this move.
+        # Generate set of states from epsilon closures over every state returned
+        # from this move.
         for symbol in nfa.alphabet:
             moveStates = move(nameToStates[state.name], symbol, nfa)
 
-            # Only proceed if move produced states. Empty set means we don't bother with epsilon closures/new states.
+            # Only proceed if move produced states. Empty set means we don't 
+            # bother with epsilon closures/new states.
             if moveStates:
                 closureSet, visitedStates = set(), set()
                 for moveState in moveStates:
@@ -116,13 +127,16 @@ def convertNfaToDfa(nfa):
                 # Generate new DFA state from combined epsilon closures.
                 newDfaState = AutomataNode(stateSetName(closureSet))
 
-                # If this new state is actually new, add new state to DFA, the unmarked list, and the name map.
-                if (newDfaState not in unmarkedStates) and (newDfaState not in markedStates):
+                # If this new state is actually new, add new state to DFA, the 
+                # unmarked list, and the name map.
+                if (newDfaState not in unmarkedStates) and \
+                   (newDfaState not in markedStates):
                     dfa.addNodes([newDfaState])
                     unmarkedStates.add(newDfaState)
                     nameToStates[newDfaState.name] = closureSet.copy()
 
-                    # Add this node to the accept list if it is based off of an accept node.
+                    # Add this node to the accept list if it is based off of an 
+                    # accept node.
                     for node in closureSet:
                         if node.accept:
                             newDfaState.accept = True
@@ -136,15 +150,24 @@ def convertNfaToDfa(nfa):
 
 
 def stateSetName(states):
-    """ Creates a name for a state derived from a supplied set of states. The name is order-independent.
+    """ Creates a name for a state derived from a supplied set of states. The 
+        name is order-independent.
+        
         :param set[AutomataNode] states: The states to derive a name from.
         :rtype: str
     """
 
-    # Note: used list comprehension here instead of just printing list because list uses repr(), not str().
-    namesList = [str(item) for item in states]  # set(['c', 'b', 'a']) -> list['c', 'b', 'a']
-    namesList = str(sorted(namesList))          # list['c', 'b', 'a']  -> ['a', 'b', 'c']
-    namesList = namesList.replace('\'', '')     # ['a', 'b', 'c']      -> [a, b, c]
-    namesList = namesList.replace(' ', '')      # [a, b, c]            -> [a,b,c]
-    namesList = (namesList[1:])[:-1]            # [a,b,c]              -> a,b,c
+    # Note: used list comprehension here instead of just printing list because 
+    # list uses repr(), not str().
+
+    # set(['c', 'b', 'a']) -> list['c', 'b', 'a']
+    namesList = [str(item) for item in states]  
+    # list['c', 'b', 'a']  -> ['a', 'b', 'c']
+    namesList = str(sorted(namesList))          
+    # ['a', 'b', 'c']      -> [a, b, c]
+    namesList = namesList.replace('\'', '')     
+    # [a, b, c]            -> [a,b,c]
+    namesList = namesList.replace(' ', '')
+    # [a,b,c]              -> a,b,c
+    namesList = (namesList[1:])[:-1]           
     return namesList
