@@ -75,7 +75,38 @@ def convert(dfa):
 
 if __name__ == "__main__":
     from description_reader import ConstructAutomata
-    testDFA = ConstructAutomata("testdata/dfa1.txt")
+    from automata import *
+    # testDFA = ConstructAutomata("testdata/dfa1.txt")
+
+    testDFA = Automata()
+    testDFA.alphabet = ['a', 'b']
+    testDFA.accepts = 's0'
+    testDFA.states = ['s0', 's1', 's2']
+
+    s0 = AutomataNode('s0', True)
+    s0.addTransition('s1', 'a')
+    s0.addTransition('s2', 'b')
+
+    s1 = AutomataNode('s1', False)
+    s1.addTransition('s0', 'b')
+    s1.addTransition('s2', 'a')
+
+    s2 = AutomataNode('s2', False)
+    s2.addTransition('s0', 'a')
+    s2.addTransition('s1', 'b')
+
+    testDFA.addNodes([s0, s1, s2])
+
     testRegex = convert(testDFA)
+    print "FULL"
     for re in testRegex:
         print re
+
+    print "SIMPLIFIED"
+    for re in testRegex:
+        reSimple = simplify(re)
+        while reSimple != re:
+            re = reSimple
+            reSimple = simplify(reSimple)
+
+        print reSimple

@@ -244,8 +244,26 @@ def simplify(re):
 
         # Concat (Empty, e) | Concat(e, Empty) -> Empty
         elif isinstance(re.left, Empty) or isinstance(re.right, Empty):
-            return Empty()
+            return Empty([])
 
         # Concat (e, f) -> Concat (e, f)
         else:
             return Concatenation(simplify(re.left), simplify(re.right))
+
+    # REPETITION
+    elif isinstance(re, Repetition):
+        # Star Empty -> Epsilon
+        if isinstance(re.expr, Empty):
+            return NilExpression([])
+
+        # Star Epsilon -> Epsilon
+        elif isinstance(re.expr, NilExpression):
+            return NilExpression([])
+
+        # Star e -> Star e
+        else:
+            return Repetition(simplify(re.expr))
+
+    # SYMBOL
+    else:
+        return re
