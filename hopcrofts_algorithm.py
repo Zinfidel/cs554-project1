@@ -22,7 +22,7 @@ def hopcroftMinimize(file):
                 else:
                     x_to_state = dfa.nodes[X[0]].getTransitionState(c)
                     for p in P:
-                        if to_state in p and x_to_state in p: X.append(from_state)
+                        if to_state in p and x_to_state[0] in p: X.append(from_state)
             if not len(X) == len(A):
                 X1 = set(X)
                 X2 = set(A).difference(X1)

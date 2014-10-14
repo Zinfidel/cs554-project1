@@ -44,7 +44,7 @@ class Automata:
 
     def __str__(self):
         ret = "Automaton:\n"
-        ret += "Start:  " + self.start + '\n'
+        ret += "Start:  " + str(self.start) + '\n'
         ret += "Accept: " + str(self.accepts) + '\n'
         ret += "States: " + str([val.name for val in self.nodes.values()])
         return ret
