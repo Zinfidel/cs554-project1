@@ -1,3 +1,11 @@
+#latex extra files
+*.aux
+*.log
+*.out
+
+#emacs extras
+*.*~
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

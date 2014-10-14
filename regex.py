@@ -69,9 +69,9 @@ class Alternative(Production):
         # he he he. rightover.... I crack myself up.
         right_consume, rightover = self.right.consume(string)
 
-        #uuuuhhhh... might be an issue here since we cant return
-        #both. What if they both match? How do we choose?
-        #currently going with the larger one
+        # This could be a potential problem due to there
+        # being multiple parses include the left or right
+        # side... We'll go with the longer parse for now
         if len(left_consume) >= len(right_consume):
             return left_consume, leftover
         else:

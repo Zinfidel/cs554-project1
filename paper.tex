@@ -1,0 +1,298 @@
+\documentclass{article}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{amsmath}
+
+\begin{document}
+\title{Project 1 Report}
+\author{Taylor Berger, Zachary Friedland, Jianyu Yang}
+\maketitle
+
+\section{Language Decisions}
+\paragraph{} We decided to write our project in Python due to the ease of
+expressing high level concepts and the removal of memory management
+from the project. We found it to be an effective choice since we could
+focus more on algorithmic nature of the project instead of the minutae
+of memory manipulation and management. At the time of writing this
+paper, we were using version 2.7.2 on a unix based system.
+
+\section{Alphabets}
+\label{sec:alphabet}
+\paragraph{} All alphabets in this project are restricted to the printable set of
+ASCII characters although a general alphabet may be completely
+unrestricted. An alphabet is defined as a set of unique symbols and are formally represented as:
+
+\[\Sigma = \{\sigma_1, \sigma_2, ... ,\sigma_n\}\]
+
+\paragraph{} In is project, alphabets are given to us in text only format.
+ Each obect in the alphabet is a pre-quoted symbol preceeded by the
+ word \verb|alphabet| and followed by the word \verb|end|. An example
+ alphabet containing the symbols $a,b,c$ would be:
+
+\begin{verbatim}
+alphabet 'a 'b 'c end
+\end{verbatim}
+
+\paragraph{} The former example can be abstracted into a formal definition:
+\begin{verbatim}
+Alphabet -> alphabet_keyword AlphabetList end_keyword
+AlphabetList -> 
+AlphabetList -> Sigma AlphabetList
+alphabet_keywork -> 'alphabet
+end_keyword -> 'end
+\end{verbatim}
+
+\paragraph{}To form an alphabet in our project, we parse the file using pyparsing
+(see appendix). The following code was be used to parse any arbitrary
+set of pre-quoted symbols into a list of symbols that we assumed make up
+an alphabet.
+
+\begin{minted}[linenos=true]{python}
+from pyparsing import *
+
+# Alphabet definition
+alphabet_keyword = Keyword("alphabet").suppress()
+alphabet_end_keyword = Keyword("end;").suppress() |\
+                       Keyword("end").suppress()
+Symbol = Combine(Literal("\'").suppress() +\
+                 Optional(Literal("\\")) +\ 
+                 Word(printables + " ", exact=1))
+
+Symbol.setParseAction(decodeEscapes)
+SymbolList = OneOrMore(Symbol)
+Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
+\end{minted}
+
+\paragraph{} Pyparsing's utility function \verb|suppress| allows the 
+parser to expect the value and remove it from the output completely
+after a successful parse is compelted. Also, the
+\verb|setParseAction(decodeEscapes)| function was used on line 10 to
+amake sure single characters that needed to be escaped in printable
+ASCII (looking at you \verb|\n|) were parsed into their correct form
+instead of a two character sequence starting with the backslash.
+
+\section{Description of Non-Deterministic Finite State Automata (NFA)}
+\label{sec:nfa}
+A formal definition for the NFA can be viewed as the following:
+\begin{verbatim}
+Nfa -> nfa_keywork States InitialStates AcceptingStates Transitions
+States -> states_keywork StateList end_keyword
+StateList -> 
+StateList -> State StateList
+InitialState -> initial_keyword State
+AcceptingStates -> accept_keyword StateList end_keyword
+Transitions -> transitions_keyword TransitionList end_keyword
+TransitionList ->
+TransitionList -> Transition TransitionList
+Transition -> State SymbolList arrow State
+SymbolList ->
+SymbolList -> symbol SymbolList
+dfa_keyword -> 'dfa
+states_keyword -> 'states
+initial_keyword -> 'initial
+accept_keyword -> 'accept
+transitions_keyword -> 'transitions
+end_keyword -> 'end;
+arrow -> '-->
+\end{verbatim}
+
+\paragraph{} It should be mentioned here that \verb|symbol| $\in \Sigma$, 
+where $\Sigma$ is the alphabet that corresponds to this NFA.
+
+i\section{Algorithms and Data Structures}
+\label{sec:algos}
+\paragraph{} Since the algorithms depend on how the data structure it 
+operates on is constructed, we will cover the three main data
+structures (regular expressions, and DFA/NFAs) used in this project
+first.
+
+\subsection{Regular Expressions}
+\label{sec:algos:regex}
+\subsubsection{Production}
+\label{sec:algos:regex:production}
+We begin by defining a base class in which all other types of regular
+expressions inherit from. This class is meaningless except to give
+the rest of the classes a common ancestor.
+
+\begin{minted}{python}
+class Production():
+    '''
+    Defines the base class that all Regex inherit from. 
+    '''
+    def __init__(self):
+        pass
+
+    def matches(self, string):
+        pass
+
+    def consume(self, string):
+        pass
+\end{minted}
+
+\paragraph{} We define two methods for this class, \verb|matches| 
+and \verb|consume| where they will, respectively, return true if they
+match the parameterized string and consume as much off the string as
+possible as long as they match what they consume. These two functions
+vary depending on the implementation so they must be overridden in
+their subclasses.
+
+\subsubsection{Sigma}
+\label{sec:algos:regex:sigma}
+\paragraph{} The first regular expression we define is the simplest, 
+but most important, Sigma production. This is a regular expression
+that is responsible for matching to a single character and is a terminal 
+regular expression for a language and is defined as \verb|E -> |$\sigma$ where $\sigma$ is a part of a predefined alphabet described in section~\ref{sec:alphabet}. 
+
+\begin{minted}{python}
+class Sigma(Production):
+    def __init__(self, sigma):
+        self.sigma = sigma
+
+    def __str__(self):
+        return str(self.sigma)
+
+    def matches(self, string):
+        return self.sigma == string
+
+    def consume(self, string):
+        if len(string) >= 1 and string[0] == self.sigma:
+            return string[0:1], string[1:]
+        else:
+            return '', string
+\end{minted}
+
+\subsubsection{Repetition}
+\label{sec:algos:regex:rep}
+\paragraph{} The next type of regular expression to implement was the 
+repetition expression, or Kleene closure defined as \verb|E -> * E|. 
+
+\begin{minted}{python}
+class Repetition(Production):
+    def __init__(self, expr):
+        self.expr = expr
+    
+    def __str__(self):
+        return "* " + str(self.expr)
+
+    def matches(self, string):
+        if string == '':
+            return True
+
+        return self.expr.matches(string[0:1]) and self.matches(string[1:])
+        
+    def consume(self, string):
+        consumed = 'default'
+        total_consumed = ''
+        leftover = string
+
+        while consumed != '':
+            consumed, leftover = self.expr.consume(leftover)
+            total_consumed += consumed
+
+        return total_consumed, leftover
+\end{minted}
+
+\subsubsection{Alternative}
+\paragraph{} Implementint the alternative production required the composition 
+of multiple regular expressions since it is a binary operator. Alternative
+regular expressions take the form: 
+
+\begin{verbatim}
+E -> | E E
+\end{verbatim}
+
+and are represented in our code as:
+
+\begin{minted}{python}
+class Alternative(Production):
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+
+    def __str__(self):
+        return '| ' + str(self.left) + ' ' +  str(self.right)
+
+    def matches(self, string):
+        return self.left.matches(string) or \
+               self.right.matches(string)
+
+    def consume(self, string):
+        left_consume, leftover = self.left.consume(string)
+        # he he he. rightover.... I crack myself up.
+        right_consume, rightover = self.right.consume(string)
+
+        if len(left_consume) >= len(right_consume):
+            return left_consume, leftover
+        else:
+            return right_consume, rightover
+
+\end{minted}
+
+\subsubsection{Concatenation}
+\label{sec:algos:regex:concat}
+\paragraph{} Concatenations are formally represented in the form \verb|E -> + E E| and are the last meaningful regular expression we need to be able to construct. We represented them as follows.
+
+\begin{minted}{python}
+class Concatenation(Production):
+    def __init__(self, left, right):
+        self.left = left
+        self.right = right
+    
+    def __str__(self):
+        return '+ ' + str(self.left) + ' ' + str(self.right)
+
+    def matches(self, string):
+        return self.left.matches(string[0:1]) and self.right.matches(string[1:])
+    
+    def consume(self, string):
+        left_match, leftover = self.left.consume(string)
+        right_match, leftover = self.right.consume(leftover)
+
+        if left_match == '':
+            return '', string
+ 
+        left_match += right_match
+
+        return ''.join(left_match), leftover
+\end{minted}
+
+\subsubsection{Nil Expression}
+\paragraph{} For completeness, a regular expression has one other semantically
+correct production, the Nil Expression. This expression recognizes regular 
+expressions of the type \verb|E -> _| where the underscore represents the 
+empty string. 
+
+\section*{Team Composition}
+
+\section*{Appendix: Libraries Used}
+\paragraph{} We tried to stay away from using any libraries that would make
+tour required tasks trivial except for reading input files. For that
+particular task we opted to use a Python text parser called
+\href{http://pyparsing.wikispaces.com/}{Pyparsing}. You can download
+and install via the python egg from their website.
+
+\section*{Source Files}
+\subsection*{regex.py}
+\inputminted{python}{./regex.py}
+
+\subsection*{automata.py}
+\inputminted{python}{./automata.py}
+
+\subsection*{description\_reader.py}
+\inputminted{python}{./description_reader.py}
+
+\subsection*{dfa\_read.py}
+\inputminted{python}{./dfa_read.py}
+
+\subsection*{scanner.py}
+\inputminted{python}{./scanner.py}
+
+\subsection*{thomsons\_construction.py}
+\inputminted{python}{./thomsons_construction.py}
+
+\subsection*{subset\_construction.py}
+\inputminted{python}{./subset_construction.py}
+
+\subsection*{hopcrofts\_algorithm.py}
+\inputminted{python}{./hopcrofts_algorithm.py}
+\end {document}
