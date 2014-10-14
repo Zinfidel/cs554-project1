@@ -24,7 +24,7 @@ alphabet_end_keyword = Keyword("end;").suppress() | Keyword("end").suppress()
 Symbol = Combine(Literal("\'").suppress() + Optional(Literal("\\")) + \
                  Word(printables + " ", exact=1))
 Symbol.setParseAction(decodeEscapes)
-SymbolList = OneOrMore(Symbol)
+SymbolList = ZeroOrMore(Symbol)
 Alphabet = alphabet_keyword + SymbolList + alphabet_end_keyword
 # example: ['a, 'b, 'c]
 

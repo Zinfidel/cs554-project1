@@ -1,4 +1,5 @@
 from automata import *
+from memory_profiler import *
 
 EPSILON = '\0'
 
@@ -57,6 +58,7 @@ def move(states, symbol, nfa):
     return reachableStates
 
 
+@profile
 def convertNfaToDfa(nfa):
     """ Converts an NFA into a DFA via epsilon closure and subset construction.
         This code is based off of this pseudocode:
@@ -171,3 +173,7 @@ def stateSetName(states):
     # [a,b,c]              -> a,b,c
     namesList = (namesList[1:])[:-1]           
     return namesList
+
+if __name__ == "__main__":
+    from description_reader import ConstructAutomata
+    convertNfaToDfa(ConstructAutomata("testdata/nfa1.txt"))
