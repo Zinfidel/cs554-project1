@@ -1,5 +1,4 @@
 from regex import BuildExpression
-import description_reader
 
 class LexicalDesc:
     """Encapsulates a complete lexical description."""
