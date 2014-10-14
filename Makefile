@@ -3,7 +3,7 @@
 default: clean
 
 clean:
-	rm *~ project1.log project1.aux project1.pdf
+	rm *~ *.log *.aux 
 
 paper: 
 	pdflatex -shell-escape project1.tex
