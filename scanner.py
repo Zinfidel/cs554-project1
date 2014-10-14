@@ -84,4 +84,8 @@ class Token:
 
     def __str__(self):
         return "Class: " + str(self.lexical_class) + "\n\tString: "\
-               + str(self.string)
+               + str(self.string) + '\n'
+
+    def __repr__(self):
+        return str(self)
+

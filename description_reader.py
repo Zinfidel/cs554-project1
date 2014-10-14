@@ -128,6 +128,7 @@ def ConstructAutomata(file):
                     fa.Alphabet)
 
 
+
 def ConstructLexicalDescription(file):
     """Parses the supplied lexical description file, then constructs and returns
        a lexical description object.
@@ -150,3 +151,9 @@ def ConstructLexicalDescription(file):
 
 
     return LexicalDesc(lexDesc.Name, lexDesc.Alphabet, lexDesc.Classes)
+
+
+if __name__ == "__main__":
+    lex_desc = ConstructLexicalDescription("./testdata/tiny_basic_lex_desc.txt")
+    tbProgram = open('./testdata/tinyBasicProgram.txt').read()
+    print lex_desc.scan(tbProgram)
