@@ -203,7 +203,12 @@ def BuildExpression(tokens):
         return Sigma(t[1:]), tokens[1:]
 
 
-def simplify(re):
+def __simplify(re):
+    """ Runs one pass through a regex tree and simplifies it.
+
+        :param Production re: The regex tree to simplify (once).
+        :rtype: Production
+    """
     # ALTERNATIVE
     if isinstance(re, Alternative):
         # Union (e, f) when e = f -> e
@@ -213,7 +218,7 @@ def simplify(re):
         # Union (Union (e, f), g) -> simple (Union (e, Union (f, g)))
         elif isinstance(re.left, Alternative):
             e, f, g = re.left.left, re.left.right, re.right
-            return simplify(Alternative(e, Alternative(f, g)))
+            return __simplify(Alternative(e, Alternative(f, g)))
 
         # Union (Empty, e) -> e
         elif isinstance(re.left, Empty):
@@ -225,22 +230,22 @@ def simplify(re):
 
         # Union (e, f) -> Union (e, f)
         else:
-            return Alternative(simplify(re.left), simplify(re.right))
+            return Alternative(__simplify(re.left), __simplify(re.right))
 
     # CONCATENATION
     elif isinstance(re, Concatenation):
         # Concat (Concat (e, f), g) -> simple (Concat (e, Concat (f, g)))
         if isinstance(re.left, Concatenation):
             e, f, g = re.left.left, re.left.right, re.right
-            return simplify(Concatenation(e, Concatenation(f, g)))
+            return __simplify(Concatenation(e, Concatenation(f, g)))
 
         # Concat (Epsilon, e) -> simple e
         elif isinstance(re.left, NilExpression):
-            return simplify(re.right)
+            return __simplify(re.right)
 
         # Concat (e, Epsilon) -> simple e
         elif isinstance(re.right, NilExpression):
-            return simplify(re.left)
+            return __simplify(re.left)
 
         # Concat (Empty, e) | Concat(e, Empty) -> Empty
         elif isinstance(re.left, Empty) or isinstance(re.right, Empty):
@@ -248,7 +253,7 @@ def simplify(re):
 
         # Concat (e, f) -> Concat (e, f)
         else:
-            return Concatenation(simplify(re.left), simplify(re.right))
+            return Concatenation(__simplify(re.left), __simplify(re.right))
 
     # REPETITION
     elif isinstance(re, Repetition):
@@ -262,8 +267,22 @@ def simplify(re):
 
         # Star e -> Star e
         else:
-            return Repetition(simplify(re.expr))
+            return Repetition(__simplify(re.expr))
 
     # SYMBOL
     else:
         return re
+
+
+def simplify(regex):
+    """ This function repeatedly simplifes a regex and checks that it is minimal via idempotence.
+
+        :param Production regex: The regex to simplify
+        :rtype: Production
+    """
+    simplifiedRegex = __simplify(regex)
+    while str(regex) != str(simplifiedRegex):
+        regex = simplifiedRegex
+        simplifiedRegex = simplify(simplifiedRegex)
+
+    return simplifiedRegex
