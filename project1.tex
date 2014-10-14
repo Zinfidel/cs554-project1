@@ -297,6 +297,32 @@ transition edges based on a certain character $\sigma$.
 
 \paragraph{} The full implementation for an automata can be found in section~\ref{code:automata}.
 
+\subsection{Construction of Scanners}
+\paragraph{} The interface between the the scanner and a parser is simply a list of matched tokens defined by the token class in scanner.py. The list of tokens are in the order they have been found. Tokens are defined as the following:
+
+\begin{minted}{python}
+class Token:
+    '''Essentially a tuple of a String, LexicalClass, and a relevance as
+       defined in the lexical desciption of the grammar
+    '''
+
+    def __init__(self, string, lex_class_name, relevance):
+        self.string = string
+        self.lexical_class = lex_class_name
+        self.relevance = relevance
+
+    def __str__(self):
+        return "Class: " + str(self.lexical_class) + "\n\tString: "\
+               + str(self.string)
+\end{minted}
+
+\paragraph{} To construct a parser, a formal definition of a language can be
+given to the BuildLexicalDescription function found in
+description\_reader.py. The function returns a Scanner object with a
+single function called \verb|parse|. The parse function takes a string
+and returns a list of Tokens identified in the language or raises an
+exception if the parse fails (meaning the string is not in the language).
+
 \section{Algorithms}
 \paragraph{}All algorithms were written in stand alone files that
 operated on parameters passed into their function calls. Please see
