@@ -283,6 +283,6 @@ def simplify(regex):
     simplifiedRegex = __simplify(regex)
     while str(regex) != str(simplifiedRegex):
         regex = simplifiedRegex
-        simplifiedRegex = simplify(simplifiedRegex)
+        simplifiedRegex = __simplify(simplifiedRegex)
 
     return simplifiedRegex
