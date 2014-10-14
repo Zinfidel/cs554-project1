@@ -74,7 +74,7 @@ class Alternative(Production):
         return '| ' + str(self.left) + ' ' +  str(self.right)
 
     def __eq__(self, other):
-        return isinstance(other, Alternative) and (self.left == other.left \
+        return isinstance(other, Alternative) and (self.left == other.left) \
                                               and (self.right == other.right)
                                                    
     def matches(self, string):
