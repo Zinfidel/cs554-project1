@@ -68,9 +68,3 @@ def convert(dfa):
                 A[i][j] = Alternative(A[i][j], Concatenation(A[i][n], A[n][j]))
 
     return simplify(B[0])
-
-
-if __name__ == "__main__":
-    from description_reader import ConstructAutomata
-    testDFA = ConstructAutomata("testdata/dfa1.txt")
-    print convert(testDFA)

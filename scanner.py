@@ -83,28 +83,3 @@ class Token:
 
     def __str__(self):
         return "Class: " + str(self.lexical_class) + "\n\tString: " + str(self.string)
-
-if __name__ == "__main__":
-     desc = description_reader.LexicalDescription.parseFile("./testdata/tiny_basic_lex_desc.txt")
-     tiny_basic = LexicalDesc(desc.Name, desc.Alphabet, desc.Classes)
-     f = open('./testdata/tinyBasicProgram.txt')
-     basic_program = f.read()
-
-     print basic_program
-     '''
-     num = None
-     for c in tiny_basic.classes:
-         if c.name == 'number':
-             num = c.regex
-
-     print num
-     print num.matches('2')
-     print num.consume('2')
-     r, over =  num.right.consume('2')
-     l, over = num.left.consume('2')
-     print len(l), len(r)
-'''
-     #TODO -- TEB: fails when scanning due to newline characters not being
-     #             recongized.
-     for c in tiny_basic.scan(basic_program):
-         print c

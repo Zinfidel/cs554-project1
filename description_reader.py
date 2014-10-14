@@ -127,6 +127,3 @@ def ConstructLexicalDescription(file):
     """
     lexDesc = LexicalDescription.parseFile(file)
     return LexicalDesc(lexDesc.Name, lexDesc.Alphabet, lexDesc.Classes)
-
-if __name__ == "__main__":
-    test = ConstructLexicalDescription("testdata/lexdesc2.txt")
