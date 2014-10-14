@@ -2,6 +2,7 @@
 \usepackage{minted}
 \usepackage{hyperref}
 \usepackage{amsmath}
+\usepackage[left=1in, right=1in]{geometry}
 
 \begin{document}
 \title{Project 1 Report}
@@ -99,7 +100,7 @@ arrow -> '-->
 \paragraph{} It should be mentioned here that \verb|symbol| $\in \Sigma$, 
 where $\Sigma$ is the alphabet that corresponds to this NFA.
 
-i\section{Algorithms and Data Structures}
+\section{Data Structures}
 \label{sec:algos}
 \paragraph{} Since the algorithms depend on how the data structure it 
 operates on is constructed, we will cover the three main data
@@ -262,37 +263,96 @@ correct production, the Nil Expression. This expression recognizes regular
 expressions of the type \verb|E -> _| where the underscore represents the 
 empty string. 
 
-\section*{Team Composition}
+\begin{minted}{python}
+class NilExpression(Production):
+    def __str__(self):
+        # return ''
+        return 'ε'
 
-\section*{Appendix: Libraries Used}
+    def __repr__(self):
+        return 'ε'
+
+    def matches(self, string):
+        return string == ''
+
+    def consume(self, string):
+        return '', string
+\end{minted}
+
+\subsection{Automata}
+\paragraph{} For our project, since the main difference between
+a NFA and a DFA is the symbol list for a transition instead of just
+a single symbol, we chose to keep the data structure the same and
+only interpret them differently when requried to by a specific 
+algorithm. 
+
+\paragraph{} The basic structure for the Automata class is a directed
+graph object. A dictionary is used to identify edges from one node to the 
+next where edges are indexed on the transition character. This is where the
+NFA and DFA must be interpretted differently. For the DFA, we expect the 
+number of states returned to be either 0 or 1. However for the NFA, any number
+of states may be returned upon inspected the transition edges based on a certain
+character $\sigma$.
+
+\paragraph{} The full implementation for an automata can be found in section~\ref{code:automata}.
+
+\section{Algorithms}
+\subsection{Thompson's Construction}
+\paragraph{}Thompson's construction works on converting our regular expressions into NFAs. The algorithm was separated from the rest of the code and resides in the file designated by section~\ref{code:thompsons}
+
+\subsection{Subset Construction}
+\paragraph{}The subset construction algorithm convers any given NFA into an equivalent DFA. The code for this can be found in the separate file designated by section~\ref{code:subset}
+
+\subsection{DFA to Regex}
+\paragraph{}As the name implies, this function converts a given DFA back to a regular Expression and can be found in section~\ref{code:dfaToRe}
+
+\subsection{Hopcroft's Algorithm}
+\paragraph{}Hopcroft's algorithm is a minimalization algorithm which minimizes a given DFA into a unique minimalistic DFA. The code for this can be found in section~\ref{code:hopcrofts}
+
+\section{Team Composition}
+
+\section{Appendix: Libraries Used}
 \paragraph{} We tried to stay away from using any libraries that would make
 tour required tasks trivial except for reading input files. For that
 particular task we opted to use a Python text parser called
 \href{http://pyparsing.wikispaces.com/}{Pyparsing}. You can download
 and install via the python egg from their website.
 
-\section*{Source Files}
-\subsection*{regex.py}
+\section{Source Files}
+\subsection{regex.py}
+\label{code:regex}
 \inputminted{python}{./regex.py}
 
-\subsection*{automata.py}
+\subsection{automata.py}
+\label{code:automata}
 \inputminted{python}{./automata.py}
 
-\subsection*{description\_reader.py}
-\inputminted{python}{./description_reader.py}
-
-\subsection*{dfa\_read.py}
-\inputminted{python}{./dfa_read.py}
-
-\subsection*{scanner.py}
+\subsection{scanner.py}
+\label{code:scanner}
 \inputminted{python}{./scanner.py}
 
-\subsection*{thomsons\_construction.py}
+\subsection{thomsons\_construction.py}
+\label{code:thompsons}
 \inputminted{python}{./thomsons_construction.py}
 
-\subsection*{subset\_construction.py}
+\subsection{subset\_construction.py}
+\label{code:subset}
 \inputminted{python}{./subset_construction.py}
 
-\subsection*{hopcrofts\_algorithm.py}
+\subsection{dfa\_to\_re.py}
+\label{code:dfaToRe}
+\inputminted{python}{./dfa_to_re.py}
+
+\subsection{hopcrofts\_algorithm.py}
+\label{code:hopcrofts}
 \inputminted{python}{./hopcrofts_algorithm.py}
+
+\subsection{dfa\_read.py}
+\label{code:dfaRead}
+\inputminted{python}{./dfa_read.py}
+
+\subsection{description\_reader.py}
+\label{code:descriptionReader}
+\inputminted{python}{./description_reader.py}
+
 \end {document}

@@ -1,6 +1,8 @@
 
 
 default: clean
+
+clean:
 	rm *~ paper.log paper.aux paper.pdf
 
 paper: 
