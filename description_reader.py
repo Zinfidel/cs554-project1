@@ -144,7 +144,3 @@ def ConstructLexicalDescription(file):
 
 
     return LexicalDesc(lexDesc.Name, lexDesc.Alphabet, lexDesc.Classes)
-
-
-if __name__ == "__main__":
-    ConstructAutomata("testdata/dfa2.txt")

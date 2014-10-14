@@ -3,10 +3,12 @@
 default: clean
 
 clean:
-	rm *~ paper.log paper.aux paper.pdf
+	rm *~ *.log *.aux  *.out
 
+#twice so we can find the right references
 paper: 
-	pdflatex -shell-escape paper.tex
+	pdflatex -shell-escape project1.tex
+	pdflatex -shell-escape project1.tex
 
 view: paper
-	okular paper.pdf &
+	okular project1.pdf

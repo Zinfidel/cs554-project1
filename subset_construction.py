@@ -148,31 +148,3 @@ def stateSetName(states):
     namesList = namesList.replace(' ', '')      # [a, b, c]            -> [a,b,c]
     namesList = (namesList[1:])[:-1]            # [a,b,c]              -> a,b,c
     return namesList
-
-
-if __name__ == "__main__":
-    # Recreate NFA from website
-    s1 = AutomataNode('s1')
-    s2 = AutomataNode('s2')
-    s3 = AutomataNode('s3')
-    s4 = AutomataNode('s4')
-    s5 = AutomataNode('s5')
-
-    s1.addTransition('s2', EPSILON)
-    s1.addTransition('s4', EPSILON)
-    s2.addTransition('s3', 'a')
-    s3.addTransition('s3', 'b')
-    s4.addTransition('s4', 'a')
-    s4.addTransition('s5', 'b')
-
-    s3.accept = True
-    s5.accept = True
-
-    testNFA = Automata()
-    testNFA.start = s1.name
-    testNFA.alphabet = ['a', 'b']
-    testNFA.addNodes([s1, s2, s3, s4, s5])
-
-    testDFA = convertNfaToDfa(testNFA)
-    for node in testDFA.nodes.values():
-        print repr(node)

@@ -140,11 +140,3 @@ def convertRegexToNFA(node):
         return constructConcatenation(left, right)
     else:
         pass
-
-
-if __name__ == "__main__":
-    s0, s1, s2 = constructCharacter('a'), constructCharacter('b'), constructCharacter('c')
-    concat = constructConcatenation(s0, s1)
-    union = constructAlternative(concat, s2)
-
-    print union.alphabet
