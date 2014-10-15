@@ -1,14 +1,18 @@
-from description_reader import ConstructAutomata
+def dfa_valid_string(automata, testing_string, current_state=None, current_step=0):
+    if current_state is None:
+        current_state = automata.start
 
-def dfa_valid_string(automata, testing_string, current_state, current_step):
     if current_step == len(testing_string):
-        for x in automata.accepts:
-            if current_state == x: return True
-        return False
+        # for x in automata.accepts:
+        #     if current_state == x: return True
+        # return False
+        return current_state in automata.accepts
     else:
-        # Since there is only one state!
-        next_state = dfa.nodes[current_state].getTransitionState(testing_string\
-                                                                 [current_step])[0] 
-        if next_state is None: return False
-        else: return dfa_valid_string(automata, testing_string, \
-                                      next_state, current_step + 1)
+        next_state = automata.nodes[current_state]\
+            .getTransitionState(testing_string[current_step])
+        if next_state is None:
+            return False
+        else:
+            next_state = next_state[0]  # DFA - should only be one state.
+            return dfa_valid_string(automata, testing_string,
+                                    next_state, current_step + 1)

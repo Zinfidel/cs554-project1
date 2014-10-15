@@ -58,13 +58,12 @@ def constructConcatenation(left, right):
 
     # Merge the right automata into the left.
     left.addNodes(right.nodes.values())
-    left.accepts = right.accepts
     left.alphabet |= right.alphabet
 
     # Add an epsilon transition from the accept state of left to the
-    # start state of the right.
-    for node in left.accepts:
-        left.nodes[node].addTransition(right.start, EPSILON)
+    # start state of__ the right.
+    left.nodes[left.accepts[0]].addTransition(right.start, EPSILON)
+    left.accepts = right.accepts
 
     return left
 
@@ -121,12 +120,12 @@ def constructRepetition(left):
 
     # Set automaton's new start and accept states.
     left.start = newStart.name
-    left.accept = [newAccept.name]
+    left.accepts = [newAccept.name]
 
     return left
 
 
-def convertRegexToNFA(node):
+def __buildNFA(node):
     """Constructs an NFA from a supplied regular expression tree.
 
        :param Production node: The current node of the regular expression
@@ -134,7 +133,6 @@ def convertRegexToNFA(node):
        :rtype: Automata
 
     """
-
     if isinstance(node, Sigma):
         return constructCharacter(node.sigma)
     elif isinstance(node, Repetition):
@@ -150,3 +148,10 @@ def convertRegexToNFA(node):
         return constructConcatenation(left, right)
     else:
         pass
+
+
+def convertRegexToNFA(node):
+    nfa = __buildNFA(node)
+    accept = nfa.accepts[0]
+    nfa.nodes[accept].accept = True
+    return nfa

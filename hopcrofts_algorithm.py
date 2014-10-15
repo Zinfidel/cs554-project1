@@ -1,8 +1,8 @@
 from automata import Automata
 from description_reader import ConstructAutomata
 
-def hopcroftMinimize(file):
-    dfa = ConstructAutomata(file)
+
+def hopcroftMinimize(dfa):
     P = [set(dfa.accepts),set(dfa.nodes.keys()).difference(set(dfa.accepts))]
     W = []
     if len(set(dfa.accepts)) > 1 : W.append(set(dfa.accepts))
@@ -22,7 +22,8 @@ def hopcroftMinimize(file):
                 else:
                     x_to_state = dfa.nodes[X[0]].getTransitionState(c)
                     for p in P:
-                        if to_state in p and x_to_state[0] in p: X.append(from_state)
+                        if x_to_state is not None:
+                            if (to_state in p) and (x_to_state[0] in p): X.append(from_state)
             if not len(X) == len(A):
                 X1 = set(X)
                 X2 = set(A).difference(X1)

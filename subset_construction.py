@@ -144,7 +144,15 @@ def convertNfaToDfa(nfa):
                             break
 
                 # Add the transition to this (new) state.
-                state.addTransition(newDfaState, symbol)
+                state.addTransition(newDfaState.name, symbol)
+
+    # Fill out the rest of the new DFA's metadata.
+    dfa.alphabet = nfa.alphabet.copy()
+    dfa.states = dfa.nodes.keys()
+    for node in dfa.nodes.values():
+        for trans in node.transitions.keys():
+            for toState in node.transitions[trans]:
+                dfa.transitions.append([node.name, [trans], toState])
 
     return dfa
 
