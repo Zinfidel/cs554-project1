@@ -101,7 +101,8 @@ def test_full_toolchain_2():
     lex_desc = ConstructLexicalDescription("testdata/lexdesc2.txt")
 
     # Step 3)
-    nfa = convertRegexToNFA(lex_desc.classes[3].regex)  # 3 = Integer Arithmetic
+    # 5 = whitespace
+    nfa = convertRegexToNFA(lex_desc.classes[4].regex)
 
     # Step 4)
     min_dfa = convertNfaToMinDfa(nfa)

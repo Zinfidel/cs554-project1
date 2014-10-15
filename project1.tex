@@ -17,6 +17,10 @@ focus more on algorithmic nature of the project instead of the minutae
 of memory manipulation and management. At the time of writing this
 paper, we were using version 2.7.2 on a unix based system.
 
+\paragraph{} We also used an external library that will have to be installed
+called Pyparsing. You can get more information about this in the Appendix 
+section~\ref{sec:libaries}.
+
 \section{Alphabets}
 \label{sec:alphabet}
 \paragraph{} All alphabets in this project are restricted to the printable set of
@@ -391,12 +395,34 @@ single token.  It should also be noted that you can convert a DFA to a
 regular expression, so our method is equivalent to parsing using a
 DFA.
 
+\section{Testing and Integration}
+\paragraph{} To test the completeness of the program and the requirements
+testing.py was created and three test cases were created. Test case 0
+tested the scanning and tokenizing aspect of the scanner generator.
+Test case 1 and 2 work with converting regular expressions to NFAs and
+NFAs to DFAs and then minimizing the resulting DFA. See
+section~\ref{code:testing}.
+
+\paragraph{} When empirically comparing the combination of subset 
+constuction and Hopcroft's algorithm, we found that on a NFA constructed
+from a regular expression of the form:
+\begin{verbatim}
+class integerArithmatic is  + * | '1 | '2 | '3 | '4 | '5 | '6 | '7 | '8 |
+                            '9 '0 + | '* | '/ | '+ '- * | '1 | '2 | '3 | 
+                            '4 | '5 | '6 | '7 | '8 | '9 '0  relevant end;
+\end{verbatim}
+ran in less than a second's worth of time. However when we ran
+Brzozowski's algorithm, the computation didn't seem to end even after
+waiting several minutes. Other NFA's constructed from regular expressions
+seemed to share the same results, Hopcroft's finished in relatively
+little time whereas Brzozowski's regularly failed finish in a reasonable
+amount of time.
+
 \section{Team Composition}
-\paragraph{}Our team worked rather well together. Taylor was 
-responsible for constructing all class structures, putting it all
-together in the scanner generator, as well as writing the
-report. Jianyu and Zach wrote many of the algorithms used and Zach put
-in a considerable amount of time using Pyparsing to read our input
+\paragraph{}Taylor was responsible for constructing all class structures, 
+putting it all together in the scanner generator, as well as writing
+the report. Jianyu and Zach wrote many of the algorithms used and Zach
+put in a considerable amount of time using Pyparsing to read our input
 files into the correct format.
 
 \paragraph{}It did take a while for our group to fully understand the
@@ -407,6 +433,7 @@ generator) a few days before turn-in but were able to group together
 and write the code we needed to successfully complete the assignment.
 
 \section{Appendix: Libraries Used}
+\label{sec:libaries}
 \paragraph{} We tried to stay away from using any libraries that would make
 tour required tasks trivial except for reading input files. For that
 particular task we opted to use a Python text parser called
@@ -455,7 +482,11 @@ and install via the python egg from their website.
 \label{code:descriptionReader}
 \inputminted{python}{./description_reader.py}
 
-\section*{Link to Code}
+\subsection{testing.py}
+\label{code:testing}
+\inputminted{python}{./testing.py}
+
+\section{Link to Code}
 Code can be found at \href{https://github.com/zinfidel/cs554-project1}{Zach's github}.
 
 \end {document}
