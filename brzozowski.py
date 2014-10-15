@@ -3,8 +3,12 @@ import description_reader
 
 def revers(nfa):
     new_accept = []
-    for s in nfa.start:
-        new_accept.append(s)
+    if isinstance(nfa.start, list):
+        for s in nfa.start:
+            new_accept.append(s)
+    else:
+        new_accept.append(nfa.start)
+
     new_start = []
     for s in nfa.accepts:
         new_start.append(s)
@@ -122,9 +126,15 @@ def reachable(nfa):
 
 def convertNfaToMinDfa(nfa):
     nfa = revers(nfa)
+    print 1
     nfa = determinis(nfa)
+    print 2
     nfa = reachable(nfa)
+    print 3
     nfa = revers(nfa)
+    print 4
     nfa = determinis(nfa)
+    print 5
     nfa = reachable(nfa)
+    print 6
     return nfa

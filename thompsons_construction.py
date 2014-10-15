@@ -154,6 +154,7 @@ def convertRegexToNFA(node):
     nfa = __buildNFA(node)
     accept = nfa.accepts[0]
     nfa.nodes[accept].accept = True
+    nfa.states = nfa.nodes.keys()
     for node in nfa.nodes.values():
         for trans in node.transitions.keys():
             for toState in node.transitions[trans]:
