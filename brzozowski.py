@@ -118,3 +118,13 @@ def reachable(nfa):
     #print new_accept
     #for x in new_transitions: print x
     return Automata(possible, nfa.start, new_accept, new_transitions, nfa.alphabet)
+
+
+def convertNfaToMinDfa(nfa):
+    nfa = revers(nfa)
+    nfa = determinis(nfa)
+    nfa = reachable(nfa)
+    nfa = revers(nfa)
+    nfa = determinis(nfa)
+    nfa = reachable(nfa)
+    return nfa

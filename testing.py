@@ -1,24 +1,9 @@
 from description_reader import *
 from hopcrofts_algorithm import hopcroftMinimize
-from brzozowski import revers, determinis, reachable
+from brzozowski import convertNfaToMinDfa
 from thompsons_construction import convertRegexToNFA
 from subset_construction import convertNfaToDfa
 from dfa_read import dfa_valid_string
-
-def test_hopcroft():
-    file = "testdata/dfa_x.txt"
-    hop = hopcroftMinimize(file)
-
-
-def test_brzozowski():
-    file2= "testdata/nfa_x.txt"
-    nfa = ConstructAutomata(file2)
-    nfa = revers(nfa)
-    nfa = determinis(nfa)
-    nfa = reachable(nfa)
-    nfa = revers(nfa)
-    nfa = determinis(nfa)
-    nfa = reachable(nfa)
 
 
 def test_full_toolchain_0():
@@ -55,7 +40,14 @@ def test_full_toolchain_1():
     # Step 6)
     test = True
     test &= dfa_valid_string(min_dfa, "1+3")
-    print test
+    test &= dfa_valid_string(min_dfa, "1-2")
+    test &= dfa_valid_string(min_dfa, "3/4")
+    test &= dfa_valid_string(min_dfa, "0*3")
+
+    if test:
+        print "Toolchain 1: Success!"
+    else:
+        print "Toolchain 1: Failure!"
 
 
 def test_full_toolchain_2():
@@ -67,6 +59,27 @@ def test_full_toolchain_2():
             4) nfa to minimal dfa using Brzozowki's algorithm
             5) validate a string using a dfa
     """
+    # Step 1), 2)
+    lex_desc = ConstructLexicalDescription("testdata/lexdesc2.txt")
+
+    # Step 3)
+    nfa = convertRegexToNFA(lex_desc.classes[3].regex)  # 3 = Integer Arithmetic
+
+    # Step 4)
+    min_dfa = convertNfaToMinDfa(nfa)
+
+    # Step 5)
+    test = True
+    test &= dfa_valid_string(min_dfa, "1+3")
+    test &= dfa_valid_string(min_dfa, "1-2")
+    test &= dfa_valid_string(min_dfa, "3/4")
+    test &= dfa_valid_string(min_dfa, "0*3")
+
+    if test:
+        print "Toolchain2: Success!"
+    else:
+        print "Toolchain 2: Failure!"
 
 if __name__ == "__main__":
     test_full_toolchain_1()
+    test_full_toolchain_2()
