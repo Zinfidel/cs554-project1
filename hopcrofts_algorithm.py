@@ -1,8 +1,8 @@
 from automata import Automata
 from description_reader import ConstructAutomata
 
-def hopcroftMinimize(file):
-    dfa = ConstructAutomata(file)
+
+def hopcroftMinimize(dfa):
     P = [set(dfa.accepts),set(dfa.nodes.keys()).difference(set(dfa.accepts))]
     W = []
     if len(set(dfa.accepts)) > 1 : W.append(set(dfa.accepts))
