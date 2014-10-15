@@ -13,6 +13,6 @@ def dfa_valid_string(automata, testing_string, current_state=None, current_step=
         if next_state is None:
             return False
         else:
-            next_state = next_state[0].name  # DFA - should only be one state.
+            next_state = next_state[0]  # DFA - should only be one state.
             return dfa_valid_string(automata, testing_string,
                                     next_state, current_step + 1)
