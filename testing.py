@@ -4,6 +4,7 @@ from brzozowski import convertNfaToMinDfa
 from thompsons_construction import convertRegexToNFA
 from subset_construction import convertNfaToDfa
 from dfa_read import dfa_valid_string
+from scanner import LexicalDesc
 
 
 def test_full_toolchain_0():
@@ -13,7 +14,44 @@ def test_full_toolchain_0():
             2) generate regex data structures
             3) use the scanner interface to lex an input file
     """
+    test = True
 
+    #start out with a simple case of mathematical notation
+    math_notation = ConstructLexicalDescription('./testdata/lexdesc2.txt')
+
+    try:
+        math_notation.scan("1+3")
+        math_notation.scan("1-2")
+        math_notation.scan("3/4")
+        math_notation.scan("0*3")
+        test &= True
+    except Exception:
+        test &= False
+
+
+    #try some invalid strings. These should end up as exceptions
+    try:
+        math_notation.scan("11asdf")
+        test &= False
+    except Exception: 
+        test &= True
+
+    #lets use the most complex example now
+    tiny_basic_scanner = ConstructLexicalDescription('./testdata/tiny_basic_lex_desc.txt')
+    
+    # Read in a complicated example from the test files
+    basic_program = open('./testdata/tinyBasicProgram.txt').read()
+    
+    try:
+        tiny_basic_scanner.scan(basic_program)
+        test &= True
+    except Exception:
+        test &= False
+
+    if test:
+        print 'Toolchain0: Success!'
+    else:
+        print 'Toolchain0: Failure...'
 
 def test_full_toolchain_1():
     """ Tests the full gamut of tools necessary to validate a provided string.
